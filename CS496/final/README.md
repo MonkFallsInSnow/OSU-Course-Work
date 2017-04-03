@@ -1,2 +1,2 @@
-# Mobile and Cloud Development 
-Final Project
+# Final Project 
+A mobile dream journal application for Android.
