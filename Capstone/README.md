@@ -8,4 +8,5 @@ Capstone Project
 
 ## Admin Credentials
 username: root@admin.com
+
 password: root
