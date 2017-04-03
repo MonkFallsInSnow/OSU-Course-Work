@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Dreamcatcher</string>
+    <string name="loginGreeting">Welcome to Dreamcatcher</string>
+    <string name="speechGreeting">Good Morning</string>
+    <string name="speachPrompt">Tell me about your dream</string>
+    <string name="signOut"><u>Sign Out</u></string>
+    <string name="serverClientID">489497037860-l3bthifnaf2jl7bvk0teng4feeudcq9g.apps.googleusercontent.com</string>
+    <string name="addSpeechBtn">Add Speech</string>
+    <string name="saveBtn">Save</string>
+    <string name="selectorLabel">Dream Type</string>
+    <string-array name="dreamTypes">
+        <item>None</item>
+        <item>Epic</item>
+        <item>Lucid</item>
+        <item>Nightmare</item>
+        <item>Recurring</item>
+        <item>False Awakening</item>
+        <item>Precognitive</item>
+        <item>Mundane</item>
+    </string-array>
+    <string name="rcrdDream">Record Dream</string>
+    <string name="viewDream">View Dreams</string>
+    <string name="reportDream">Get Report</string>
+    <string name="optionsLabel">Dreamcatcher Options</string>
+    <string name="optionsBtn">Options</string>
+    <string name="updateBtn">Update</string>
+    <string name="deleteBtn">Delete</string>
+    <string name="tagPrompt">Symbol Tags</string>
+    <string name="addDetailsBtn">Details</string>
+</resources>

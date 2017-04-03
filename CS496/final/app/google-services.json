@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "489497037860",
+    "project_id": "cs-496-hw4"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489497037860:android:a9058f2604b83ebc",
+        "android_client_info": {
+          "package_name": "com.cs496.osu.dream_catcher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "489497037860-je3qcj196k0kf3tuacj39ef9sq5gavup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cs496.osu.dream_catcher",
+            "certificate_hash": "22078281F7ED64E85AB7C509ABB338E16E8821CD"
+          }
+        },
+        {
+          "client_id": "489497037860-l3bthifnaf2jl7bvk0teng4feeudcq9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4h4ZY3iR3xoXnwWuJVKm4awxJt6eMflk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

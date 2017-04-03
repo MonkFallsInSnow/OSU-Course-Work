@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_view_dreams"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/marron"
+    tools:context="com.cs496.osu.dream_catcher.ViewDreamsActivity">
+
+    <ListView
+        android:id="@+id/dreamList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:listSelector="@color/lightMarron">
+
+    </ListView>
+    <!--
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/dreamDate"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        android:id="@+id/dreamType"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_marginStart="150dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:maxHeight="300dp"
+            android:scrollbars="vertical"
+            android:id="@+id/dreamSummary"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_textview"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="450dp"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_prev"
+            android:id="@+id/prevPage"
+            android:onClick="changeDream"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_next"
+            android:id="@+id/nextPage"
+            android:onClick="changeDream"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="500dp"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/deleteBtn"
+            android:id="@+id/delBtn"
+            android:onClick="removeDream"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optionsBtn"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/optionsBtn"
+            android:onClick="getOptions"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/updateBtn"
+            android:id="@+id/updateBtn"
+            android:onClick="updateDream"/>
+
+    </LinearLayout>
+    -->
+</RelativeLayout>
