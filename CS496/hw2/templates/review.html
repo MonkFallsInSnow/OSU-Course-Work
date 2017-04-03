@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Review Your Dreams{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li><a href="/">Home</a></li>
+	<li><a href="/record">Record Dreams</a></li> 
+	<li class="active"><a href="/review">View & Edit Dreams</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+	<li><a href="/sign-up"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+	<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class = "page-header">
+	<h1>Review Your Dreams</h1>
+</div>
+
+{% if hasResults == true %}
+<table class="table">
+	<thead>
+		<tr>
+			<th>Edit</th>
+			<th>Date</th>
+			<th>Title</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Mood</th>
+			<th>Tags</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in query %}
+		<tr>
+			<td><a href="edit-dream?key={{ item.key }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+			<td width="8%">{{ item.date }}</td>
+			<td width="12%">{{ item.title }}</td>
+			<td>{{ item.desc }}</td>
+			<td>{{ item.dreamType }}</td>
+			<td>
+			{% for mood in item.moods %}
+			<span class="label label-success">{{ mood }}</span>
+			{% endfor %}
+			</td>
+			<td>
+			{% for tag in item.tags %}
+			<span class="label label-primary">{{ tag|lower}}</span>
+			{% endfor %}
+			</td>
+			<td>
+				<form action="/review" method="POST">
+					<button type="submit" name="delBtn">
+						<span class="glyphicon glyphicon-remove" style="color:red"></span>
+						<input type="hidden" name="entityKey" value="{{ item.key }}">
+					</button>
+				</form>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% else %}
+<p>{{ msg }}</p>
+{% endif %}
+<p>{{ test }}</p>
+{% endblock content %}
+
+
+<!--
+<p>if you have time put a form here that queries the datastore for dreams between a user given date range and/or tag</p>
+<p>result table goes here... if you run out of time, just shows all dreams... </p>
+<p>for viewing and editing dreams</p>
+-->

@@ -1,0 +1,40 @@
+<!-- in user view: shows all awards a user has created -->
+{% extends "loggedInBase.html" %}
+
+{% block title %}<title>Capstone Project</title>{% endblock title %}
+
+{% block activeNav %}
+	<li><a href="/user"><span class="glyphicon glyphicon-home"></span> User Home</a></li>
+	<li><a href="/create"><span class="glyphicon glyphicon-pencil"></span> Create Award</a></li>
+	<li class="active"><a href="/awards"><span class="glyphicon glyphicon-tower"></span> List Awards</a></li>
+{% endblock activeNav %}
+
+{% block content %}
+	<div class="container">
+		<div>
+			<!-- creates table -->
+			{% if awards|length > 0 %}
+			<table class="table">
+				<tr>
+					<th>Recipient</th>
+					<th>Award Type</th>
+					<th>Date Granted</th>
+					<th>Delete Award?</th>
+				</tr>
+				<!-- fills table from data base -->
+				{% for award in awards %}
+				<tr>
+					<td>{{awards[award].recipient}}</td>
+					<td>{{awards[award].type}}</td>
+					<td>{{awards[award].issuedOn}}</td>
+					<td><a href="/remove-award/?awd={{awards[award].id}}"<span class="glyphicon glyphicon-remove"></span></a></td>
+				</tr>
+				{% endfor %}
+			</table>
+			<!-- message if user has not created any awards yet -->
+			{% else %}
+			<p> You have not created any awards yet. Click 'Create Award' above to begin </p>
+			{% endif %}
+		</div>
+	</div>
+{% endblock content %}

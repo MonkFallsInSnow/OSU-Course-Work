@@ -1,0 +1,126 @@
+SimpleBlackjack Bug Reporting
+==============================
+
+Title: Incorrect Dealer and Player Hand Size at Start of Game
+
+Class: Serious Bug
+
+Date: 10/27/2016        
+Reported By: Conrad Lewin 
+Email: lewinc@oregonstate.edu  
+
+Product:  Simple Blackjack      Version: v1     
+
+Is it reproducible: Yes
+
+Description
+===========
+From Reference: "Each box is dealt an initial hand of two cards visible to the people playing on it, and often to any other players."
+
+At the start of each round each player and the dealer should have a hand size of two cards - this does not occur. Instead, each player begins the round having been dealt a single card, while the dealer's hand depends on the number of players in a game. When cards are being dealt, the dealer is dealer is given a card for each player. If there is only one player, then both the player and the dealer start the game with one card. If there are two players, then each player gets one card and the dealer two. The issue is localized to the following for loop in the SimpleBlackjack class:
+
+for(PlayerAction p: players )
+{
+	dealer.dealCard(dealer);
+	dealer.dealCard(p);
+}
+
+
+Steps to Produce/Reproduce
+--------------------------
+1) Create a DealerAction object (da)
+2) Create a one or more PlayerAction objects (pa,[pa2,pa3])
+3) Create a SimpleBlackjack object
+4) Call the playRound() method, forcing the player to stand as its first action
+5) Count the number of times the method dealCard(pa,[pa2,pa3]) is called
+6) Count the number of times the method dealCard(da) is called
+
+Expected Results
+----------------
+1) The dealCard(pa,[pa2,pa3]) method should be called exactly two times, giving each player a starting hand size of two cards
+2) The dealCard(da) method should be called exactly two times, giving the dealer a starting hand size of two cards
+
+Actual Results
+--------------
+1) The dealCard(pa,[pa2,pa3]) method is called only once, giving each player a starting hand size of one card
+2) The dealCard(da) method is called only once, giving the dealer a starting hand size of one card
+
+Workarounds
+-----------
+None found
+
+
+Other Information
+-----------------
+This is a serious bug, as it affects how each round is settled and winners declared. If there is only one player, then the highest score a dealer can attain is 10 as it is given only once card to play the game with. If there are many players, then it is more likely the dealer will bust before the game has even begun.
+ 
+The following is code for a JUnit test that demonstrates the player is given a single card at the start of the game:
+
+@Test
+public void testStartingPlayerHand()
+{
+	DealerAction da = mock(DealerAction.class);
+    PlayerAction pa = mock(PlayerAction.class);
+
+	when(pa.getAction()).thenReturn(PlayerAction.ActionType.STAND);
+
+	SimpleBlackjack bj = new SimpleBlackjack(da,new PlayerAction[]{pa});
+	bj.playRound();
+
+	verify(da,times(2)).dealCard(pa);
+}
+
+The following is code for a JUnit test that demonstrates the dealer is given a single card at the start of the game:
+
+@Test
+public void testStartingDealerHand()
+{
+	DealerAction da = mock(DealerAction.class);
+    PlayerAction pa = mock(PlayerAction.class);
+
+	when(pa.getAction()).thenReturn(PlayerAction.ActionType.STAND);
+
+	SimpleBlackjack bj = new SimpleBlackjack(da,new PlayerAction[]{pa});
+	bj.playRound();
+
+	verify(da,times(2)).dealCard(da);
+}
+
+The following is code for a JUnit test that demonstrates the dealer is given a more than two cards at the start of the game:
+
+@Test
+public void testStartingDealerHandWithMultiplePlayers()
+{
+	DealerAction da = mock(DealerAction.class);
+    PlayerAction pa = mock(PlayerAction.class);
+	PlayerAction pa2 = mock(PlayerAction.class);
+	PlayerAction pa3 = mock(PlayerAction.class);
+
+	when(pa.getAction()).thenReturn(PlayerAction.ActionType.STAND);
+	when(pa2.getAction()).thenReturn(PlayerAction.ActionType.STAND);
+	when(pa3.getAction()).thenReturn(PlayerAction.ActionType.STAND);
+
+	SimpleBlackjack bj = new SimpleBlackjack(da,new PlayerAction[]{pa,pa2,pa3});
+	bj.playRound();
+
+	verify(da,atMost(2)).dealCard(da);
+}
+
+
+Bug Fix
+-------
+dealer.dealCard(dealer);
+dealer.dealCard(dealer);
+		
+for(PlayerAction p: players )
+{
+	dealer.dealCard(p);
+	dealer.dealCard(p);
+}
+
+Change made to the second for each loop in playRound() method in SimpleBlackjack class 
+dealer.dealCard(dealer); was removed from the for each loop
+dealer.dealCard(dealer); was placed before the for each loop and is called twice
+dealer.dealCard(p); is called twice within the for each loop
+
+

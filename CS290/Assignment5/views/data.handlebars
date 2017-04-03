@@ -1,0 +1,48 @@
+<style>
+	table {width:500px; border-style:solid; border-color:black}
+	td	  {border-style:solid; border-color:gray; border-width:1px}
+	th	  {border-style:solid; border-color:gray; border-width:1px}
+</style>
+
+{{#if getReq}}
+	<h1>GET Request Received</h1>
+	<p>URL Data:</p>
+	<table>
+		<th>Key</th>
+		<th>Value</th>
+		{{#each item}}
+		<tr>
+			<td>{{this.name}}</td> 
+			<td>{{this.value}}</td>
+		</tr>
+		{{/each}}
+	</table>
+{{else}}
+	<h1>POST Request Received</h1>
+	<p>URL Data:</p>
+	<table>
+		<th>Key</th>
+		<th>Value</th>
+		{{#each qItem}}
+		<tr>
+			<td>{{this.name}}</td> 
+			<td>{{this.value}}</td>
+		</tr>
+		{{/each}}
+	</table>
+	<br>
+	<p>Body Data:</p>
+	<table>
+		<th>Key</th>
+		<th>Value</th>
+		{{#each bItem}}
+		<tr>
+			<td>{{this.name}}</td> 
+			<td>{{this.value}}</td>
+		</tr>
+		{{/each}}
+	</table>
+{{/if}}
+
+
+

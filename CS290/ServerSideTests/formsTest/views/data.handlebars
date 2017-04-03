@@ -1,0 +1,10 @@
+{{#if getReq}}
+	<h1>Get Data Sent</h1>
+{{else}}
+	<h1>Post Data Sent</h1>
+{{/if}}
+	<ul>
+		{{#each item}}
+		<li>{{this.name}}: {{this.value}}</li>
+		{{/each}}
+	</ul>

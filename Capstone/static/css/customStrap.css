@@ -1,0 +1,117 @@
+.tie-man, 
+.user-man {
+	background-image: url('../images/tie-man.jpg');
+	background-size: cover;
+	background-position: center center;
+	min-width: 100%;
+	height: 450px;
+	margin-top: -20px;
+	padding-top: 20px;
+}
+.user-man {
+  background-image: none;
+  background: #5321a8;
+  background: -moz-linear-gradient(-45deg, #5321a8 0%, #a811ad 100%);
+  background: -webkit-linear-gradient(-45deg, #5321a8 0%,#a811ad 100%);
+  background: linear-gradient(135deg, #5321a8 0%,#a811ad 100%);
+}
+
+
+.tie-man h1,
+.user-man h1 {
+	color: white;
+	font-size: 50px;
+	font-weight: bold;
+	text-shadow: 0 0 15px rgba(0,0, 0, 0.5);
+	margin: 30px 0;
+}
+
+.user-man h1{
+  text-transform: capitalize;
+}
+
+.user-man .btn {
+  margin-bottom: 30px;
+}
+
+.user-man a .glyphicon{
+  padding-right: 5px;
+}
+
+.line-right{
+	border-right: 1px solid #e1e1e1;
+}
+
+.is-hidden {
+	display: none;
+}
+
+.is-transparent {
+	opacity:0;
+	filter:alpha(opacity=0);
+	position:absolute;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.admin-button{
+	font-size: 75px;
+}
+
+.row-buffer{
+	margin-top: 20px;
+}
+
+.center-block{
+	float: none;
+}
+
+.selected-image{
+  border: 2px solid #337ab7;
+}
+
+.border-black{
+  padding-top: 2em;
+  border: 2px solid black;
+  min-height: 10em;
+  background: #101010;
+  white-space:normal;
+  margin-top: 1em;
+}
+
+.inline-form { display: inline-block; }
+
+/* Creates loading spinner */
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}

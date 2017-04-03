@@ -1,0 +1,10 @@
+venv
+build
+*~
+*.pyc
+*.env
+*.pdf
+*.aux
+*.log
+*.tex
+/*.png

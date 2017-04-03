@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li class="active"><a href="/">Home</a></li>
+	<li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a href="/basic-chart-1">Setup</a></li>
+          	<li><a href="/basic-chart-2">Preparing Assets</a></li>
+          	<li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a href="/chart-data-1">User Input</a></li>
+          	<li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="jumbotron"><h1>Google Charts for Android Applications</h1></div>
+<div class="page-header"><h1 class="title">What This Guide Covers</h1></div>
+<p>This guide will lead you through the basics of generating data visualizations for your Android applications using the Google Charts API. We will begin by illustrating how to create and customize a simple pie chart. Next, we will explore feeding data received from user input and HTTP requests to your charts. Finally, we will look at some of the more advanced features the Google Charts API offers, like chart animation and controls.</p>
+<div class="page-header"><h1 class="title">Prior Knowledge</h1></div>
+<p>A basic understanding of the following will be crucial to getting the most out of this guide:</p>
+<ul>
+	<li>Java</li>
+	<li>JavaScript</li>
+	<li>HTML</li>
+	<li>Android Studio</li>
+	<li>Asynchronous HTTP Requests</li>
+	<li>JSON</li>
+</ul>
+<p>Let's get started!</p>
+<br>
+<p class="trail">Next: <a href="/basic-chart-1">Setting up the project</a></p>
+{% endblock content %}

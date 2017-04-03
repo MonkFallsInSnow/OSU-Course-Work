@@ -1,0 +1,29 @@
+body
+{
+	background-color: #FFFFFB;
+}
+
+
+.jumbotron
+{
+	background-color: #0D4D4D;
+	color: white;
+}
+
+.page-header
+{
+	border-bottom: 1px solid black;
+	font-family: "Times New Roman", Georgia, Serif;
+}
+
+.trail
+{
+	font-size: large;
+}
+
+.subtitle
+{
+	font-size: large;
+}
+
+

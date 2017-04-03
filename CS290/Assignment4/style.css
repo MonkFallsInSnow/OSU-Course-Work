@@ -1,0 +1,30 @@
+label
+{
+    display: inline-block;
+    width: 60px;
+}
+
+div
+{
+    height: 70px;
+}
+
+#thinker
+{
+    font-weight: bold;
+}
+
+.infoLabel
+{
+    font-weight: bold;
+}
+
+#weatherInfo
+{
+    list-style-type: circle;
+}
+
+#treatise
+{
+    font-style: italic;
+}

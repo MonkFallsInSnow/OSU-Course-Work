@@ -1,0 +1,1441 @@
+#########PHASE 1#############
+
+
+Get All Accounts - eventual consistency only
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Query returned zero results"
+}
+
+
+Headers:
+{
+    "Content-Length": "47", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+Get All Users - eventual consistency only
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Query returned zero results"
+}
+
+
+Headers:
+{
+    "Content-Length": "47", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+Get All Dreams - eventual consistency only
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Query returned zero results"
+}
+
+
+Headers:
+{
+    "Content-Length": "47", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+Get Invalid
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid url endpoint"
+}
+
+
+Headers:
+{
+    "Content-Length": "40", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 2A############
+
+
+Invalid User Post - Missing Keys
+-------------------------------------------------------------------
+Response:
+{
+    "message": "A requried key is missing from the request body", 
+    "required": "['account', 'user', 'fname', 'lname', 'email', 'username', 'gender', 'age']"
+}
+
+
+Headers:
+{
+    "Content-Length": "161", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+Invalid User Post - Bad Age Value
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid value was passed in request body. Check the value of key -> age"
+}
+
+
+Headers:
+{
+    "Content-Length": "91", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+Invalid User Post - Bad Gender Value
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Please use one of the following gender values -> ['male', 'female', 'transgender', 'none']"
+}
+
+
+Headers:
+{
+    "Content-Length": "110", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+Post User 1
+-------------------------------------------------------------------
+Response:
+{
+    "account": 6362186595172352, 
+    "message": "User was created and added to the database", 
+    "user": 4954811711619072
+}
+
+
+Headers:
+{
+    "Content-Length": "123", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "201"
+}
+-------------------------------------------------------------------
+
+
+Post User 2
+-------------------------------------------------------------------
+Response:
+{
+    "account": 6080711618461696, 
+    "message": "User was created and added to the database", 
+    "user": 5517761665040384
+}
+
+
+Headers:
+{
+    "Content-Length": "123", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "201"
+}
+-------------------------------------------------------------------
+
+
+Post User 3
+-------------------------------------------------------------------
+Response:
+{
+    "account": 6643661571883008, 
+    "message": "User was created and added to the database", 
+    "user": 4602967990730752
+}
+
+
+Headers:
+{
+    "Content-Length": "123", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "201"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 2B############
+
+
+Get User With Invalid Account ID
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Content-Length": "106", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+Get User 1 By Account ID
+-------------------------------------------------------------------
+Response:
+{
+    "age": 32, 
+    "email": "conrad@foo.com", 
+    "fname": "conrad", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "clewin"
+}
+
+
+Headers:
+{
+    "Content-Length": "135", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Get User 2 By Account ID
+-------------------------------------------------------------------
+Response:
+{
+    "age": 31, 
+    "email": "sam@foo.com", 
+    "fname": "sam", 
+    "gender": "female", 
+    "lname": "toman", 
+    "username": "stoman"
+}
+
+
+Headers:
+{
+    "Content-Length": "131", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Invalid Query String
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid key was passed in query string", 
+    "valid keys": "['age', 'fname', 'lname', 'gender', 'email', 'username']"
+}
+
+
+Headers:
+{
+    "Content-Length": "135", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+Find User By Last Name (lewin) - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "age": 32, 
+        "email": "conrad@foo.com", 
+        "fname": "conrad", 
+        "gender": "male", 
+        "lname": "lewin", 
+        "username": "clewin"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "155", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Find User By Last Name  (lewin); Limit 1 Result; Filter Result Columns - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "age": 32, 
+        "gender": "male", 
+        "username": "clewin"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "76", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Find User By Last Name  (Lewin); Limit 1 Result; Filter Result Columns - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[]
+
+
+Headers:
+{
+    "Content-Length": "3", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 2C#############
+
+
+User 1 - Original
+-------------------------------------------------------------------
+Response:
+{
+    "age": 32, 
+    "email": "conrad@foo.com", 
+    "fname": "conrad", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "clewin"
+}
+
+
+Headers:
+{
+    "Content-Length": "135", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Invalid Update of User 1
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Resource not found"
+}
+
+
+Headers:
+{
+    "Content-Length": "38", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "404"
+}
+-------------------------------------------------------------------
+
+
+User 1 - Update
+-------------------------------------------------------------------
+Response:
+{
+    "age": 32, 
+    "email": "conrad@foo.com", 
+    "fname": "conrad", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "clewin"
+}
+
+
+Headers:
+{
+    "Content-Length": "135", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+User 3 - Original
+-------------------------------------------------------------------
+Response:
+{
+    "age": 65, 
+    "email": "bart@foo.com", 
+    "fname": "bart", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "blewin"
+}
+
+
+Headers:
+{
+    "Content-Length": "131", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Update Name and Gender of User 3
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource has been updated", 
+    "user": 4602967990730752
+}
+
+
+Headers:
+{
+    "Content-Length": "79", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+User 3 - Update
+-------------------------------------------------------------------
+Response:
+{
+    "age": 65, 
+    "email": "bart@foo.com", 
+    "fname": "foo", 
+    "gender": "transgender", 
+    "lname": "bar", 
+    "username": "blewin"
+}
+
+
+Headers:
+{
+    "Content-Length": "135", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 3A#############
+
+
+Invalid Dream Post - Missing Required Keys
+-------------------------------------------------------------------
+Response:
+{
+    "message": "A requried key is missing from the request body", 
+    "required": "['account', 'user']"
+}
+
+
+Headers:
+{
+    "Content-Length": "105", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+Post Dream With All Fields - User 1
+-------------------------------------------------------------------
+Response:
+{
+    "dream": 5728867897573376, 
+    "message": "Dream was created and added to the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "93", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "201"
+}
+-------------------------------------------------------------------
+
+
+Post Dream With Fewer Fields - User 1
+-------------------------------------------------------------------
+Response:
+{
+    "dream": 5165917944152064, 
+    "message": "Dream was created and added to the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "93", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "201"
+}
+-------------------------------------------------------------------
+
+
+Post Dream With All Fields - User 2
+-------------------------------------------------------------------
+Response:
+{
+    "dream": 6291817850994688, 
+    "message": "Dream was created and added to the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "93", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "201"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 3B#############
+
+
+Get Dreams From Invalid User
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "175", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 1
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "522", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 2
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "nightmare test description", 
+        "dreamType": "Nightmare", 
+        "mood": [
+            "worried", 
+            "disgusted"
+        ], 
+        "summary": "nightmare dream summary", 
+        "tags": [
+            "tag1", 
+            "tag2", 
+            "tag3"
+        ], 
+        "title": "nightmare dream title"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "335", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 3
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "175", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+Search Using Invalid Key
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid key was passed in query string", 
+    "valid keys": "['title', 'date', 'mood', 'tags', 'dreamType']"
+}
+
+
+Headers:
+{
+    "Content-Length": "125", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+Find All Recurring Dreams - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "310", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Find All Recurring Dreams; Limit is 1; Fewer Fields - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "mood": [
+            "annoyed"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "78", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Find All Recurring Dreams - Invalid Query String
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid query string", 
+    "restrictions": "1) can't specify unindexed properties in query string fields key. 2) a key's value cannot be searched for and also used in the fields key. ex: ../dreams?fname=foo&fields=fname", 
+    "unidexed properties": "['summary', 'desc', 'content', 'commentor']"
+}
+
+
+Headers:
+{
+    "Content-Length": "311", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 3C#############
+
+
+User 1 Dream 1- Original
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "522", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Update User 1 Dream 1
+-------------------------------------------------------------------
+Response:
+{
+    "message": "This request requires the account, user and dream keys"
+}
+
+
+Headers:
+{
+    "Content-Length": "74", 
+    "Date": "Sun, 23 Oct 2016 00:52:21 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+User 1 Dream 1 - Update
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "522", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+User 2 Dream 1 - Original
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "522", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Update User 2 Dream 1 - Invalid Request
+-------------------------------------------------------------------
+Response:
+{
+    "message": "This request requires the account, user and dream keys"
+}
+
+
+Headers:
+{
+    "Content-Length": "74", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "400"
+}
+-------------------------------------------------------------------
+
+
+User 2 Dream 1 - Update
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Content-Length": "522", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 4A#############
+
+
+Removing Dream 1 From User 2
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Dream resource deleted"
+}
+
+
+Headers:
+{
+    "Content-Length": "42", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 2
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "175", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+Remove Non-Existant Dream
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Dream not found"
+}
+
+
+Headers:
+{
+    "Content-Length": "35", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "404"
+}
+-------------------------------------------------------------------
+
+
+Removing User 1
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource deleted"
+}
+
+
+Headers:
+{
+    "Content-Length": "41", 
+    "Date": "Sun, 23 Oct 2016 00:52:22 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Removing User 2
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource deleted"
+}
+
+
+Headers:
+{
+    "Content-Length": "41", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+Removing User 3
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource deleted"
+}
+
+
+Headers:
+{
+    "Content-Length": "41", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "200"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 4B#############
+
+
+User 1 Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Content-Length": "106", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+User 2 Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Content-Length": "106", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+User 3 Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Content-Length": "106", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+User 1 Dreams Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "175", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+User 2 Dreams Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "175", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+User 3 Dreams Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Content-Length": "175", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+
+All Accounts Should Be Gone - Eventual Consistency
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Query returned zero results"
+}
+
+
+Headers:
+{
+    "Content-Length": "47", 
+    "Date": "Sun, 23 Oct 2016 00:52:24 GMT", 
+    "Server": "Development/2.0", 
+    "accept": "application/json", 
+    "cache-control": "max-age=300", 
+    "content-language": "en", 
+    "content-type": "application/json", 
+    "status": "204"
+}
+-------------------------------------------------------------------
+
+

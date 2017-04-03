@@ -1,0 +1,286 @@
+#!/bin/bash
+
+#Author: Conrad Lewin
+#Date: 4/11/2016
+#Description: Reads a given input file containing whole numbers 
+#by row or column and calculates the average and median of each row/column.
+
+#catch unexpected program interupts, hangups and termination
+trap "rm -f temp*; exit 1" INT HUP TERM
+
+#-----------Global Variables-------------------------------------------------------
+#global temp file that stores averages on the first line
+#and medians on the second line
+statsData="tempdata$$"
+
+
+#-----------FUNCTIONS----------------------------------------------------------------
+#Reads each line of a given file and calculates the average of each row
+#Requires a tab separated file containing whole numbers 
+function getAvgRow
+{
+    #read each line of the input file
+    while read line
+    do
+      #initialize var needd to calculate the average
+      local sum=0
+
+      #dump each line into a local temp file, removing all tabs 
+      #and spaces and replacing them with newline characters
+      $(echo "$line" | tr '['\t' [:space:]]' '\n' > "tempfile$$")
+
+      #read each number in the local temp file
+      while read num
+      do
+        #get the number of ints in the temp file
+        #get the sum of the ints in the temp file
+        sum=$(($sum+$num))
+      done < "tempfile$$"
+
+      #calculate the average of the current line being read 
+      #and dump that value into the global temp file
+      local numCount=$(wc -l < "tempfile$$") 
+      avg=$(echo "scale=1; $sum/$numCount+0.1" | bc)
+      $(printf "%.0f\t" $avg >> "$statsData")
+    done < $1
+    
+    #add a newline to the global temp file
+    #then remove the local temp file
+    $(printf "%b\n" >> "$statsData") 
+    $(rm -f "tempfile$$")
+}
+
+
+#Reads each line of a given file and calculates the median of each row
+#Requires a tab separated file containing whole numbers 
+function getMedianRow
+{
+    #read each line from the input file
+    while read line
+    do
+      local pos=0
+
+      #dump the current line into a local temp file with
+      #all tabs and spaces replaced by newline characters
+      $(echo "$line" | tr '['\t' [:space:]]' '\n' | sort -g > "tempfile$$")
+
+      #get the number of ints in the local temp file
+      numCount=$(wc -l < "tempfile$$") 
+      
+      #calculate the position of the median
+      pos=$(($numCount/2+1))
+
+      #read the first half of the first local temp file
+      #and dump those values into a second local temp file
+      $(head -n $pos "tempfile$$" > "tempfile$$_2")
+
+      #read the last line of the second temp file, this will be the median
+      #then append that value to the global temp file
+      local median=$(tail -n 1 "tempfile$$_2")
+      $(printf "%d\t" $median >> "$statsData")
+    done < $1
+
+    #add a newline to the global temp file
+    #remove the local temp files
+    $(printf "%b\n" >> "$statsData")
+    $(rm -f "tempfile$$" "tempfile$$_2")
+}
+
+
+#Prints the averages and medians of each row in a given input file
+#Requires a tab separated input file contaiing whole numbers
+function printRowStats
+{
+    #get row averages and medians
+    #all values are stored in the global temp file
+    #averages are on the first line, each value delimited by tabs
+    #medians are on the second line, each value delimited by tabs
+    getAvgRow $1
+    getMedianRow $1
+
+    #print header
+    printf "Average Median\n"
+
+    #get the number of columns in the input file by counting the
+    #number of the ints therein
+    local numCount=$(wc -l < $1)
+
+    #dump the contents of each field column from the given input file
+    #into a local temp file, then print these values separated by a tab
+    for i in `seq 1 $numCount`
+    do
+      $(cut -f$i "$statsData" > "tempfile$$" )
+      while read num
+      do
+        printf "%d\t" $num
+      done < "tempfile$$"
+      
+      printf "%b\n"
+    done
+    
+    #remove the local temp file
+    $(rm -f "$statsData" "tempfile$$" ) 
+}
+
+
+#Reads each line of a given file and calculates the average of each column
+#Requires a tab separated file containing whole numbers 
+function getAvgCol
+{
+    #get the number of columns
+    local colCount=$(head -n 1 $data | wc -w)
+    
+    #get each column in the input file
+    for i in `seq 1 $colCount`
+    do
+      local numCount=0
+      local sum=0
+      $(cut -f$i $1 > "tempfile$$")
+       
+     #calculate the sum
+     while read num
+     do
+       numCount=$(($numCount+1))
+       sum=$(($sum+$num))
+     done < "tempfile$$"
+
+     #calculate the average and dump that value into the
+     #global temp file
+     local avg=$(echo "scale=1; $sum/$numCount+0.1" | bc)
+     $(printf "%.0f\t" $avg >> "$statsData")
+    done
+    
+    #add a newline to the global temp file    
+    $(printf "%b\n" >> "$statsData")
+
+    #delete the local temp file
+    $(rm -f "tempfile$$")
+}
+
+
+#Reads each line of a given file and calculates the median of each column
+#Requires a tab separated file containing whole numbers 
+function getMedianCol
+{
+    #get the number of columns and ints in the given input file
+    local numCount=$(cut -f1 $1 | wc -w)
+    local colCount=$(head -n 1 $data | wc -w)
+
+    #get the position of the median
+    local pos=$(($numCount/2+1))
+
+    #find the median in each column
+    for i in `seq 1 $colCount` 
+    do
+      #dump the contents of the current column into a temp file
+      $(cut -f$i $1 | sort -g > "tempfile$$")
+    
+      #dump the first half of that temp file into a second temp file
+      $(head -n $pos "tempfile$$" > "tempfile$$_2")
+
+      #read the last line of that file, then append that value
+      #to the global temp file
+      local median=$(tail -n 1 "tempfile$$_2")
+      $(printf "%d\t" $median >> "$statsData") 
+    done
+
+   
+    #add a newline to the global temp file    
+    $(printf "%b\n" >> "$statsData")
+
+    #delete the local temp files
+    $(rm -f "tempfile$$" "tempfile$$_2")
+}
+
+
+#Prints the averages and medians of each column in a given input file
+#Requires a tab separated input file containing whole numbers
+function printColStats
+{
+    #get row averages and medians
+    #all values are stored in the global temp file
+    #averages are on the first line, each value delimited by tabs
+    #medians are on the first line, each value delimited by tabs
+    getAvgCol $1
+    getMedianCol $1
+
+    #print header
+    printf "Averages:\n"
+    
+    #print first line of the global temp file
+    local line=$(head -n 1 $statsData)
+    echo "$line"
+   
+    #print header
+    printf "Medians:\n"
+    
+    #print second line of the global temp file
+    line=$(tail -n 1 $statsData)
+    echo "$line"
+
+    #remove temp files    
+    $(rm -f "$statsData")
+}
+
+
+#--------END FUNCTIONS-------------------------------------------------------------------------------
+
+
+#-------MAIN-----------------------------------------------------------------------------------------
+
+#check number and validity of program arguments
+
+#if a single argument is passed to the program, make sure it starts with either a -r or -c
+#and dump the contents of a given input file piped into the program into a temp file.
+#otherwise, print an error message and exit the program
+if [[ $# == 1 ]]
+then
+   if [[ $1 =~ ^-(r|c).* ]]
+   then
+      data="temp$$"
+      cat > "$data"
+   else
+      echo "Usage: stats {-rows|-cols} [file]" 1>&2
+      exit 1
+   fi
+#if two arguments are given, then maker sure the first argument begins with either a -r or -c
+#if the second argument is a valid file, then save that file for processing
+#otherwise, print an appropriate error message and exit the program
+elif [[ $# == 2 ]]
+then
+   if ! [[ $1 =~ ^-(r|c).* ]]
+   then
+      echo "Usage: stats {-rows|-cols} [file]" 1>&2
+      exit 1
+   fi
+
+   if [[ -e $2 && -r $2 ]]
+   then
+       data=$2
+   else
+       echo "Cannot read $2" 1>&2
+       exit 1
+   fi
+else
+   echo "Usage: stats {-rows|-cols} [file]" 1>&2
+   exit 1
+fi
+
+#read file by row
+if [[ $1 =~ ^-r.* ]]
+then
+    printRowStats $data
+
+#read file by column
+elif [[ $1 =~ ^-c.* ]]
+then
+   printColStats $data
+fi
+
+#clean up
+if [[ $# == 1 ]]
+then
+   $(rm -f "$data")
+fi
+
+#-------END MAIN-----------------------------------------------------------------------------------------

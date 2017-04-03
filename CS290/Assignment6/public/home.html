@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Assignment 6</title>
+        <link rel="stylesheet" href="/stylesheet.css">
+    </head>
+    <body>
+    <h1>Database Interactions and UI</h1>
+    <form method="POST" id="workoutForm" name="workoutForm">
+        <fieldset>
+            <legend>Exercise Routine</legend>
+            <p>
+                <label for="name">Exercise</label>
+                <input type="text" id="name" name="name">
+            </p>
+            <p>
+                <label for="reps">Reps</label>
+                <input type="text" id="reps" name="reps">
+            </p>
+            <p>
+                <label for="weight">Weight</label>
+                <input type="text" id="weight" name="weight">
+            </p>
+            <p>
+                <label for="date">Date</label>
+                <input type="text" id="date" name="date">
+            </p>
+            <p>
+                <label for="lbs">lbs</label>
+                <input type="text" id="lbs" name="lbs">
+            </p>
+            <p>
+                <input type="submit" class="buttons" id="submitBtn" name="submitBtn">
+                <input type="hidden" id="insert" name="insert">
+            </p>
+        </fieldset>
+    </form>
+    <br>
+    <p id="status"></p>
+    <br>
+    <form method='POST' id="formTable">
+        <table id="workoutTable" hidden="true">
+        </table>
+    </form>
+    <script src="/homeScript.js"></script>
+    </body>
+</html>

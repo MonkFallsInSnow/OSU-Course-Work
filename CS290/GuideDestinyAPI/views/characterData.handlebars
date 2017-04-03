@@ -1,0 +1,115 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/index">Guide to the Destiny API</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/index">Home</a></li>
+            <li class="active"><a href="/characterData">Sample Application</a></li>
+            <li><a href="/getKey">Getting an API Key</a></li>
+            <li><a href="/firstRequest">Your First Request</a></li>
+            <li><a href="/moreRequests">Making More Interesting Requests</a></li>
+            <li><a href="/resources">Conclusion and Resources</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="map">
+        <form action="/characterData" method="POST" id="playerForm" role="form" class="form-horizontal">
+            <legend>Guardian Data</legend>
+
+            <div class="col-md-12 columns">
+                <div class="form-group">
+                    <label for="playerId">Player ID</label>
+                    <div class="row">
+                        <div class="col-md-2"><input class="form-control" type="text" id="playerId" name="playerId"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2 columns">
+                        <div class="row">
+                            <label class="radio-inline" for="radioPlayStation">
+                                <input type="radio" name="accountType" value="psn">Playstation Network
+                            </label>
+                        </div>
+                        <div class="row">
+                            <label class="radio-inline" for="radioXbox">
+                                <input type="radio" name="accountType" value="xbox">Xbox Live
+                            </label>
+                        </div>
+                        <div class="row">
+                            <label class="radio-inline" for="radioChar3">
+                                <input type="radio" name="accountType" value="none">No Account
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2 columns">
+                        <div class="row">
+                            <label class="radio-inline" for="radioChar1">
+                                <input type="radio" name="characterNum" value="0">Character 1
+                            </label>
+                        </div>
+                        <div class="row">
+                            <label class="radio-inline" for="radioChar2">
+                                <input type="radio" name="characterNum" value="1">Character 2
+                            </label>
+                        </div>
+                        <div class="row">
+                            <label class="radio-inline" for="radioChar3">
+                                <input type="radio" name="characterNum" value="2">Character 3
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary" id="submitBtn" name="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {{#if header}}
+            <div class="col-md-12" style="height:50px;"></div><!-- adds a space between form and table -->
+        {{/if}}
+        <div class="row">
+            <table class="table" id="dataTable">
+                {{#if header}}
+                    <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                {{/if}}
+                <tbody>
+                {{#each data}}
+                    <tr>
+                        <td class="content column">{{this.name}}</td>
+                        <td><img class="images" src={{this.icon}}></td>
+                        {{#if desc}}
+                            <td class="content">{{this.desc}}</td>
+                        {{else}}
+                            <td class="content">None</td>
+                        {{/if}}
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+        <br>
+        <div class="row">
+            <a href="/index" class="btn btn-success btn-md pull-left" id="prevBtn"><< Previous</a>
+            <a href="/getKey" class="btn btn-success btn-md pull-right" id="nextBtn">Next >></a>
+        </div>
+    </div>
+</div>
+
+<script src="/scripts/client.js"></script>
+
+

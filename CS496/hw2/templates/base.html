@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% block head %}
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+		<!--Boostrap Tag Input Plugin: http://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/ -->
+		<link rel="stylesheet" href="/static/css/bootstrap-tagsinput.css" />
+		<script src="/static/js/bootstrap-tagsinput.min.js"></script>
+
+		<link rel="stylesheet" href="/static/css/stylesheet.css">
+
+		<title>{% block title %}{% endblock title %}</title>
+
+		{% endblock head %}
+	</head>
+	<body>
+		<div class="bck">
+			<!-- Collapsable navbar code adapted from w3Schools: http://www.w3schools.com/bootstrap/bootstrap_navbar.asp -->
+			<nav class="navbar navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+		  				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					        <span class="icon-bar"></span>
+					        <span class="icon-bar"></span>
+					        <span class="icon-bar"></span> 
+				      	</button>
+		  				<a class="navbar-brand" href="/">Dream Catcher</a>
+					</div>
+					<div class="collapse navbar-collapse" id="myNavbar">
+				      	{% block navbar %}{% endblock navbar %}
+					</div>
+				</div>
+			</nav>
+			<!-- end borrowed code from w3Schools -->
+
+			<div class='container'>
+				<div class="mat">
+					{% block content %}{% endblock content %}
+				</div>
+				<br>
+			</div>
+		</div>		
+	</body>
+</html>

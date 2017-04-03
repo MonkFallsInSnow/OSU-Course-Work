@@ -1,0 +1,97 @@
+SimpleBlackjack Bug Reporting
+==============================
+
+Title: Insurance is Never Available
+
+Class: Serious Bug
+
+Date: 10/27/2016        
+Reported By: Conrad Lewin 
+Email: lewinc@oregonstate.edu  
+
+Product:  Simple Blackjack      Version: v1     
+
+Is it reproducible: Yes
+
+Description
+===========
+From Reference: "If the dealer's upcard is an ace, the player is offered the option of taking "insurance" before the dealer checks the hole card."
+
+From Reference: "The dealer's hand receives its first card face up, and in "hole card" games immediately receives its second card face down (the hole card), which the dealer peeks at but does not reveal unless it makes the dealer's hand a blackjack."
+
+The dealer's hand is always empty. All cards dealt to the dealer's hand end up back in the deck, so the isInsuranceAvailable() method's for each loop never executes a single iteration. The following functions from the Dealer class demonstrates the root of the problem:
+
+private List<Card> dealerHand = new ArrayList<Card>();
+
+public void acceptCard(Card c) 
+{
+	deck.add(c);
+}
+
+public void dealCard(CommonAction toPlayer) 
+{
+	Card c = this.dealCardFromDeck(true);
+	toPlayer.acceptCard(c);
+}
+
+When calling the dealCard() method with a DealerAction object passed as parameter, the Dealer class's acceptCard() method is called, adding Card c to the dealer's deck rather than its hand. Note also that the dealCard() method does not diferentiate between a DealerAction and a PlayerAction object which means both cards dealt to the dealer will be visible. This violates the rules of the game. 
+	
+Steps to Produce/Reproduce
+--------------------------
+Note that the bug can be reproduced by testing the Dealer class
+
+1) Create a Dealer object (d)
+2) Create two card objects, one of these cards must be an ace
+3) Have the dealer accept both cards
+4) Set the ace's visibility to true, and the other card's visibility to false
+5) Call isInsuranceAvailable()
+6) Check for a return value of true
+
+
+Expected Results
+----------------
+The return value of isInsuranceAvailable() should be true
+
+
+Actual Results
+--------------
+The return value of isInsuranceAvailable() is false
+
+
+Workarounds
+-----------
+None found
+
+
+Other Information
+-----------------
+If the dealer deals a card to itself, it fails to enter its hand. Instead the card is inserted into the list representing the deck. Unfortunately, the dealer's hand is referenced several times throughout the Dealer class definition and causes a major bug in the compareHandAndSettle() method in the Dealer class that guarantees the player will win every hand it doesn't bust. The following JUnit test demonstrates how to reproduce the bug:
+
+@Test
+public void testIsInsuranceAvailable()
+{
+	Dealer d = new Dealer();
+	Card card1 = new Card(Card.Face.ACE,Card.Suit.SPADE);
+	Card card2 = new Card(Card.Face.TWO,Card.Suit.HEART);
+
+	d.acceptCard(card1);
+	d.acceptCard(card2);
+
+	card1.setVisible(true);
+	card2.setVisible(false);
+
+	boolean result = d.isInsuranceAvailable();
+
+	assertTrue("Dealer should have insurance", result);
+}
+
+
+Bug Fix
+-------
+public void acceptCard(Card c) 
+{
+	dealerHand.add(c);
+}
+
+Change made to the acceptCard method in the Dealer class 
+deck.add(c); was replaced with dealerHand.add(c);

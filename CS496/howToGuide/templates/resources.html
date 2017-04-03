@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li class="active"><a href="/">Home</a></li>
+	<li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a href="/basic-chart-1">Setup</a></li>
+          	<li><a href="/basic-chart-2">Preparing Assets</a></li>
+          	<li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a href="/chart-data-1">User Input</a></li>
+          	<li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="page-header"><h1 class="title">Resources for Further Study</h1></div>
+<p>I hope this guide has proved useful to you, and that you are now fully prepared to implement basic charts in your Android applications. There is much more you can do with the Google Charts API and many ways you can incorporate them into your application, so here are some resources you might find useful for further study:</p>
+<b class="subtitle">Android</b>
+<ul>
+    <li><a href="https://developer.android.com/reference/android/webkit/WebView.html" target="_blank">WebView documentation</a></li>
+    <li><a href="https://developer.android.com/training/volley/request.html" target="_blank">Working with Volley</a></li>
+    <li><a href="https://developer.android.com/guide/webapps/webview.html" target="_blank">Creating web apps in a WebView</a></li>
+    <li><a href="http://www.tuicode.com/question/572901041a9474f114927162" target="_blank">Passing data back and forth between Java and JavaScript files</a></li>
+    <li><a href="https://developer.android.com/training/basics/data-storage/index.html" target="_blank">Saving data across multiple activities</a></li>
+</ul>
+<br>
+<b class="subtitle">Google Charts API</b>
+<ul>
+    <li><a href="https://developers.google.com/chart/interactive/docs/gallery" target="_blank">Chart gallery</a></li>
+    <li><a href="https://developers.google.com/chart/interactive/docs/basic_multiple_charts" target="_blank">Drawing mutlipe charts on one page</a></li>
+    <li><a href="https://developers.google.com/chart/interactive/docs/basic_interactivity" target="_blank">Interacting with charts</a></li>
+    <li><a href="https://developers.google.com/chart/interactive/docs/spreadsheets" target="_blank">Getting data from Google Spreadsheets</a></li>
+    <li><a href="https://developers.google.com/chart/interactive/docs/customizing_charts" target="_blank">Advanced chart customization</a></li>
+    <li><a href="https://developers.google.com/chart/interactive/docs/animation" target="_blank">Advanced chart animation</a></li>
+</ul>
+<br>
+<p class="trail">Previous: <a href="/chart-customization-1">Chart animation and controls</a></p>
+{% endblock content %}

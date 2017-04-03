@@ -1,0 +1,96 @@
+SimpleBlackjack Bug Reporting
+==============================
+
+Title:  A Player's Wallet is Emptied After Round
+
+Class: Serious Bug
+
+Date: 10/27/2016        
+Reported By: Conrad Lewin 
+Email: lewinc@oregonstate.edu  
+
+Product:  Simple Blackjack      Version: v1     
+
+Is it reproducible: Yes
+
+Description
+===========
+If the player's score is closer to 21 than the dealer's, then the player should have double its bet returned to its wallet. However, no matter whether the player wins of looses, its wallet is always reset to a null value after playing a round. The bug emerges when the playeRound() method in the SimpleBlackjack class calls the compareHandAndSettle() method in the Dealer class which in turn calls the nextHand() method in the player class:
+
+public void nextHand() 
+{
+	currentBet = null;
+	currentWallet = null;
+	currentInsurance = null;
+}
+
+Steps to Produce/Reproduce
+--------------------------
+Note that the bug can be reproduced by testing the Dealer class
+
+1) Create a Dealer object (d)
+2) Create a Player object (p)
+3) Have the player make a single bet
+4) Deal the player 4 cards from an deck object that has not been shuffled
+5) Call compareHandAndSettle()
+6) Check the value of the player's wallet
+
+
+Expected Results
+----------------
+The player should have a wallet value of 1010
+
+
+Actual Results
+--------------
+The value of the player's wallet is null
+
+
+Workarounds
+-----------
+None found
+
+
+Other Information
+-----------------
+This bug breaks the game entirely. Not only is the player's wallet emptied after the first round, because the Integer object representing the player's wallet is set to null, subsequent rounds will through a NullPointerException when the acceptMoney() method in the Player class attempts to add the current bet value to the player's wallet on its next win. With this bug in play, only one round can be played in which the player wins and doing so will delete all money in the player's wallet. The following JUnit test duplicates the bug:
+
+@Test
+public void testCompareHandAndSettlePlayerWin()
+{
+	Dealer d = new Dealer();
+	Player p = new Player();
+	int playerBet = p.makeBet();
+	Integer expected = playerBet + p.currentWallet;
+
+	p.moveMoneyToBet(playerBet);
+	
+	for(int i = 0; i < 4; i++)
+	{
+		d.dealCard(p);
+	}
+
+	try
+	{
+		d.compareHandAndSettle(p);
+	}
+	catch(Exception e)
+	{
+		fail("An unhandled exception occured -> " + e.toString());
+	}
+
+	assertEquals("The Player didn't win",expected,p.currentWallet);
+
+}
+
+Bug Fix
+-------
+public void nextHand() 
+{
+	currentBet = null;
+	currentInsurance = null;
+}
+
+Change made to the nextHand() method in the Player class
+currentWallet = null; was removed from the method body
+

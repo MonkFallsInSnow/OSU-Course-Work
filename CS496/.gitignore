@@ -1,0 +1,3 @@
+#ignore lib directory. create a lib folder in the project root directory and run pip install -t lib -r requirements.txt
+/hw*/lib/*
+/hw4/creds.*

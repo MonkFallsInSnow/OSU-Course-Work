@@ -1,0 +1,150 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/index">Guide to the Destiny API</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/index">Home</a></li>
+            <li><a href="/characterData">Sample Application</a></li>
+            <li><a href="/getKey">Getting an API Key</a></li>
+            <li><a href="/firstRequest">Your First Request</a></li>
+            <li class="active"><a href="/moreRequests">Making More Interesting Requests</a></li>
+            <li><a href="/resources">Conclusion and Resources</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="map">
+        <h1 class="page-header">Discovering Your Inner Guardian</h1>
+        <p class="content">This section of the guide will involve getting some more specific game data. We will explore some request responses that detail things like currently equipped items, completed in-game activities, vendor inventory and getting a list of available game items.</p>
+        <br>
+        <br>
+        <h2>Character summaries</h2>
+        <p class="content">Getting a complete summary of a character’s information is a useful way of discovering what kind of data the API provides and the form in which that data exists. Unfortunately, its not all human readable strings, so for some of the response items an extra step must be taken, namely making a query to the Destiny manifest, to decipher some of the more mysterious aspects of the response’s key value pairs. But before we cover the manifest, lets take a look at a complete character summary. The URL that enables you to get a detailed character summary is</p>
+        <br>
+        <p class="content"> <code>http://www.bungie.net/Platform/Destiny/{membershipType}/Account/{destinyMembershipId}/Summary/ </code></p>
+        <br>
+        <p class="content"> The only new part here is the <code>{destinyMembershipId}</code> parameter. Making this request is similar to getting your membership id. All you need do is input the membership id you got from your <a href="/firstRequest">first request</a>. Here is some code that will accomplish the request:</p>
+        <br>
+        <pre class="prettyprint images">
+            baseRequest(HOST + credentials.defaultMemberType + '/Account/' + credentials.defaultMemberID + '/Summary/',
+                function (err, response, body) {
+
+                if (!err && response.statusCode < 400) {
+                    var context = {};
+                    context.test = JSON.stringify(JSON.parse(body), null, 4);
+                    res.render('test', context);
+                }
+            });
+        </pre>
+        <br>
+        <p class="content">The complete summary report is extremely long, and you can take a look at one <a href= "summary" target="_blank">here</a>. In the meantime, let’s take a look at a portion of the response.</p>
+        <br>
+        <img src="images/summary.jpg" class="images">
+        <br>
+        <br>
+        <p class="content">There are two important values represented in this and various other JSON object responses, namely the character id, needed for some other HTTP requests, and the various hash codes. Rather than getting a descriptive string value, a hash code is supplied that, when demystified using a request to the manifest, will return an object with more human readable data. Also, if you took a look at the full JSON object response, you will have noticed two keys toward the bottom of the <code>characterBase</code> property called <code>emblemPath</code> and <code>backgroundPath</code>. The values for theses properties may look something like this:</p>
+        <br>
+        <p class="content"><code>/common/destiny_content/icons/a9ac444de02308d1410af8a0c201d177.jpg</code></p>
+        <br>
+        <p class="content"> These are image paths and to render them in say a web page, you must affix the <code> http://bungie.net</code> URL to the beginning of the given path when passed to your <code>img</code> tag.</p>
+        <br>
+        <br>
+        <h2>The Destiny Manifest</h2>
+        <p class="content">Dealing with the given hash codes requires a call to the Destiny manifest. The URL for such a request is</p>
+        <br>
+        <p class="content"><code>http://www.bungie.net/Platform/Destiny/Manifest/{type}/{id}/ </code></p>
+        <br>
+        <p class="content">The <code>{id}</code> parameter should be supplied the hash code you wish to decipher, while the <code>{type}</code> parameter links to a particular page in the manifest containing that hash. A list of types can be found <a href="http://bungienetplatform.wikia.com/wiki/DestinyDefinitionType" target="_blank">here</a>. The following is a code snippet that makes a request to the API for a list of in-game activities my own character has completed. A list of activity hashes is received by the first HTTP request and then a for loop containing a call to the manifest is used to parse each hash code and store the demystified data in an array of objects before rendering that information to the page. </p>
+        <br>
+        <pre class="prettyprint images">
+            baseRequest(HOST + credentials.defaultMemberType + '/Account/' + credentials.defaultMemberID +
+                '/Character/' + credentials.defaultCharacterID + '/Activities/', function (err, response, body) {
+
+                if (!err && response.statusCode < 400) {
+                    var context = {}; //context for the handlebars page template
+                    var activities = []; //stores a list of activity hash codes
+                    var result = []; //stores a list of activity names and descriptions
+
+                    var len = JSON.parse(body).Response.data.available.length; //the number of activities returned by the request
+
+                    //gets the activities my character has completed and stores them in the activities array
+                    for(var i = 0; i < len; i++)
+                    {
+                        if(JSON.parse(body).Response.data.available[i].isCompleted == true)
+                        {
+                            activities.push(JSON.parse(body).Response.data.available[i].activityHash);
+                        }
+                    }
+
+                    //callback function that will render the page once all the asynchronous requests have completed
+                    var callback = function () {
+                        context.activity = result;
+                        res.render('test', context);
+                    };
+
+                    len = activities.length - 90; //for the sake of brevity I will omit 90 activities when displaying the results
+                    var callsLeft = len; //the number of asynchronous requests that must complete before rendering the page
+
+                    //if no calls have been made, then simply render the page
+                    if (callsLeft === 0) {
+                        callback();
+                    }
+                    //otherwise, make a call to the manifest
+                    else {
+                        for (var i = 0; i < len; i++) {
+                          //notice the 1 after /Manifest/. This is the type parameter that will provide translated hash codes for activities
+                            baseRequest(HOST + '/Manifest/1/' + activities[i] + '/', function (err, response, body) {
+                                if (!err && response.statusCode < 400) {
+                                    //add the name and description of the activity to the results array
+                                    result.push({
+                                        name: JSON.parse(body).Response.data.activity.activityName,
+                                        desc: JSON.parse(body).Response.data.activity.activityDescription
+                                    });
+
+                                    //render the page once all the requests have returned
+                                    if (--callsLeft === 0) {
+                                        callback();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        </pre>
+        <br>
+        <p class="content">An important thing to note about the above code sample is how one goes about accessing the different object keys. After you parse the response body, the key to gaining entry into the object is the <code>Response</code> property. From there, you must carefully examine the rest of the JSON object data in order to select the information your app requires. Also, be aware that the order of the data returned from all HTTP requests to the Destiny API are not always guaranteed to be in the same order. In fact,  if you refresh this page or make equivalent requests using the sample application, you may get the results in a different order. Below is the outcome of the above code example:</p>
+        <br>
+        <ul id="actList">
+            {{#each activity}}
+                <li class="content">{{this.name}} - {{this.desc}}</li>
+            {{/each}}
+        </ul>
+        <br>
+        <h2>Some requests that break the mold</h2>
+        <p class="content">Not all of the request URLs take parameters and some requests will only return a response on certain days. For example, a call to the API for Xur’s inventory will only return data when Xur is in-game. Here is the URL for such a request:</p>
+        <br>
+        <p class="content"><code>https://www.bungie.net/Platform/Destiny/Advisors/Xur/</code></p>
+        <br>
+        <p class="content">Likewise, getting a list of all of Destiny’s available items and their respective stats, drop zones, etc. takes no parameters, but requires a query string appended to the endpoint. Here is the URL:</p>
+        <br>
+        <p class="content"><code>http://www.bungie.net/Platform/Destiny/Explorer/Items/</code></p>
+        <br>
+        <p class="content">There are several key values pairs that can be added to this endpoint and a link to a complete list of them can be found on the <a href="/resources">resources page</a>. In the meantime, a sample endpoint that returns all the items that contain the word “Obsidian” will look like this:</p>
+        <br>
+        <p class="content"><code>http://www.bungie.net/Platform/Destiny/Explorer/Items/?name=Obsidian&definitions=true</code></p>
+        <br>
+        <p class="content">Notice the use of <code>definitions=true</code>. If the key is set to false, the response will only return a set of hash codes that represent the found items, omitting a great deal of statistical, graphical and descriptive data.</p>
+        <br>
+        <br>
+        <a href="/firstRequest" class="btn btn-success btn-md pull-left" id="prevBtn"><< Previous</a>
+        <a href="/resources" class="btn btn-success btn-md pull-right" id="nextBtn">Next >></a>
+        <br>
+        <br>
+    </div>
+</div>

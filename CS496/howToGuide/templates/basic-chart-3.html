@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android - Creating a Basic Pie Chart{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+    <li><a href="/">Home</a></li>
+    <li class="dropdown active">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/basic-chart-1">Setup</a></li>
+            <li><a href="/basic-chart-2">Preparing Assets</a></li>
+            <li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle active" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-data-1">User Input</a></li>
+            <li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="page-header"><h1 class="title">Loading the Library & Drawing the Chart</h1></div>
+<p>Now let's create an HTML file by right clicking the html subfolder and selecting New &gt File. I'm going to name it <code>chart.html</code>, but you can call it whatever you want. Put the following in this file:</p>
+<br>
+<pre class="prettyprint">
+&lthtml&gt
+    &lthead&gt
+        &ltscript type="text/javascript" src="https://www.gstatic.com/charts/loader.js"&gt&lt/script&gt
+        &ltscript type="text/javascript" src="file:///android_asset/js/genChart.js"&gt&lt/script&gt
+    &lt/head&gt
+    &ltbody&gt
+        &ltdiv id="chart" style="width:600; height:600"&gt&lt/div&gt
+    &lt/body&gt
+&lt/html&gt
+</pre>
+<br>
+<p>The most important parts of the preceding HTML code are the two <code>script</code> tags. The first tag is necessary for loading the Google Charts API and must be present in order to display a chart within the <code>WebView</code>. This will allows us to make use of the various objects and functions the API makes available to us. The second <code>script</code> tag links the web page to a JavaScript file that does the actual work of displaying the chart. Notice the value of <code>src</code> in this tag. Using <code>file:///android_asset/&ltrest of file path&gt</code> instructs the application to locate a given file in the assets folder we created earlier.</p>
+<p>The <code>div</code> tag in the HTML body marks the location to which we will display our chart. Note the value of the id. This string will be used in the JavaScript file to retrieve the <code>div</code> element so that it may be passed to the chart object constructor.</p>
+<p>Let's move on. Create a JavaScript file called genChart.js in the js subfolder and add the following code:</p>
+<br>
+<pre class="prettyprint linenums">
+google.charts.load('current', {packages: ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart(){
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Game');
+    data.addColumn('number', 'Hours Played');
+    data.addRows([
+    ['Dark Souls III',400],
+    ['Civilization VI',350],
+    ['No Man\'s Sky',30],
+    ['Destiny',100],
+    ['Fallout 4',150],
+    ['Skyrim',300]
+    ]);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart'));
+    chart.draw(data);
+}
+</pre>
+<br>
+<p>Let's cover this line by line. Line 1 does the work of loading a chart package coresponding to the version specified in the function's first parameter. Using <code>'current'</code> will load the latest release of the API. As of the writing of this guide, the latest version is identified by the numeral 45 and should serve you well with most applications; however, if you find yourself neededing to load a previous release, <a href="https://developers.google.com/chart/interactive/docs/release_notes#Releases" target="_blank">here</a> is a link to some older versions of the API. These versions are considered "frozen", meaning that they are no longer supported and their functionality will not change for the foreseeable future. Keep in mind that older versions of the API will not allow you to call <code>google.charts.load</code> more than once, something you might do if you needed to load several different chart packages. Furthermore, if you do decide to load several different chart packages, all calls to <code>google.charts.load</code> must supply the same version parameter.</p>
+<p>The second parameter in this function requires an object that is used to define package settings. There are a few different <a href="https://developers.google.com/chart/interactive/docs/basic_load_libs#settings" target="_blank">options</a> you can specify here, but at this point we are concerend only with specifying which charts we wish to load, and <code>{packages: ['corechart']}</code> does just that. We are keeping it simple and only loading the <code>corechart</code> package which includes bar, column, line, area, stepped area, bubble, pie, donut, combo, candlestick, histogram, scatter charts. You can easily add more charts by extending the array with the appropriate package name. You can find a list of available charts and their coresponding package names by exploring this <a href="https://developers.google.com/chart/interactive/docs/gallery" target="_blank">page</a>.</p>
+<p>After calling <code>google.charts.load</code>, it will take some time for the package to load. As such, a callback function that will execute once both the package and document have loaded must be set to handle drawing the chart. Line 2 achieves this end by passing a function definition, <code>drawChart</code>, as argument to the <code>google.charts.setOnLoadCallback</code> function. If you wish, an anonymous function may take the place of the definition given in the example above. Also, multiple callback functions can be set by making multiple calls to <code>google.charts.setOnLoadCallback</code> and supplying different function definitions in order to draw multiple charts. It is important to note that all callback functions will be called without arguments.</p>
+<p>Next, we define a function called <code>drawChart</code> that will do the work of creating the chart and drawing it within the <code>div</code> tag we ememded into our HTML file. The first line of this function creates and empty<code>DataTable</code> object (you can get a more specific description of the <code>DataTable</code> class by looking at the <a href="https://developers.google.com/chart/interactive/docs/reference#DataTable" target="_blank">documentation</a>). Each chart type requires that its data be formated in a specific way. Most charts require their data to be formated in rows and columns and the pie chart we are currently working on is no different. Hence, once we have created an empty <code>DataTable</code> object, we can call the <code>addColumn</code> and <code>addRows</code> functions to achieve this end. The <code>addColumn</code> function takes two arguments, the first indicating the <a href="https://developers.google.com/chart/interactive/docs/reference#methods" target="_blank">type of data</a> this column supports, and the second defines the name of the column. The <code>addRows</code> function takes either a number or an array as parameter. In our case, we are passing an array of arrays containing elements that correspond to the columns we defined in the previous two lines. Another, and perhaps a cleaner, way to add rows and columns to our <code>DataTable</code> object would be to replace lines 5 through 15 with a call to the <code>arrayToDataTable</code> function, making our <code>drawChart</code> function appear as such:</p>
+<br>
+<pre class="prettyprint linenums">
+function drawChart(){
+    var data = new google.visualization.arrayToDataTable([
+    ['Game','Hours Played'],
+    ['Dark Souls III',400],
+    ['Civilization VI',350],
+    ['No Man\'s Sky',30],
+    ['Destiny',100],
+    ['Fallout 4',150],
+    ['Skyrim',300]
+    ]);
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart'));
+    chart.draw(data);
+}
+</pre>
+<br>
+<p>Now that we have prepared some basic data we can finally draw the chart. The last two lines of the <code>drawChart</code> fucntion accomplish just that. The first of these lines creates a pie chart visualization object, whose constructor takes as argument a container within which it can be displayed. We then invoke the <code>draw</code> function, using the data we formated earlier to inform the shape of the chart. Before we run our app, we need to add one more line to our <code>MainActivity</code> class: <code>webview.loadUrl("file:///android_asset/html/chart.html");</code>. This line will do the work of loading the HTML file in the WebView. The code in the <code>MainActivity</code> class should now look like this:</p>
+<br>
+<pre class="prettyprint linenums">
+package com.cs496.osu.howtoguide;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        WebView webview = (WebView) findViewById(R.id.chartView);
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+        webview.loadUrl("file:///android_asset/html/chart.html");
+    }
+}	
+</pre>
+<br>
+<p>If you run your app at this point you should see the following chart:</p>
+<br>
+<img src="/static/images/pieChart2D.jpg">
+<br>
+<br>
+<p>The <code>draw</code> function also supports a second argument for specifying options relating to how the chart is displayed. We will cover more of these options later in the guide, but we can make a very quick improvement to this chart by adding a title and changing the chart from a 2D to a 3D model. Replace <code>chart.draw(data);</code> with the following:</p>
+<br>
+<pre class="prettyprint linenums">
+var options = {title:'Time Spent Playing Video Games',is3D:true};
+chart.draw(data, options);
+</pre>
+<br>
+<p>Your pie chart should now look something like this:</p>
+<br>
+<img src="/static/images/pieChart3D.jpg">
+<br>
+<p>I should say that when making changes to the <code>genChart.js</code> file, and simply rerunning the app (the green arrow button in Android Studio), that those changes were not accurately relfected after the apk was updated. Its tedious, but you may have to disconnect your device or emulator by clicking the red stop button before running your app again to view any changes you may have made to your JavaScript or HTML files.</p>
+<br>
+<div class="row">
+<div class="col-xs-8"><p class="trail">Previous: <a href="/basic-chart-2">Preparing the assets</a></p></div>
+<div class="col-xs-4"><p class="trail">Next: <a href="/chart-data-1">Working with user input</a></p></div>
+</div>
+{% endblock content %}

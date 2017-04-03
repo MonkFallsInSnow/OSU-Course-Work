@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android - Customization and Controls{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li class="active"><a href="/">Home</a></li>
+	<li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a href="/basic-chart-1">Setup</a></li>
+          	<li><a href="/basic-chart-2">Preparing Assets</a></li>
+          	<li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        	<li><a href="/chart-data-1">User Input</a></li>
+          	<li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown active">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="page-header"><h1 class="title">Adding Controls and Animation</h1></div>
+<p>We are going to make a few modifications to the weather forecast chart we created in <a href="/chart-data-2">this</a> section of the guide. One of the more powerful features of the Google Charts API is the ability to add controls to your chart, so we are going to take advantage of this and add a date range slider to our chart that will allow the user to view temperatures for a specific date or dates. We will also be adding some animation to the chart that executes whenever we use the slider to make changes to the data the chart displays. To do this, we have to approach the creation of the chart in different way. We must create a dashboard that will host both the chart and the control. This is a relatively simple task and requires that we make only a few changes to our <code>chart.html</code> and <code>genChart.js</code> files. Let's take a look at <code>chart.html</code>:
+<br>
+<pre class="prettyprint">
+&lthtml&gt
+    &lthead&gt
+        &ltscript type="text/javascript" src="https://www.gstatic.com/charts/loader.js"&gt&lt/script&gt
+        &ltscript type="text/javascript" src="file:///android_asset/js/genChart.js"&gt&lt/script&gt
+    &lt/head&gt
+    &ltbody&gt
+        &ltdiv id="dashboard"&gt
+            &ltdiv id="chart" style="width:800; height:800"&gt&lt/div&gt
+            &ltdiv id="dateSlider"&gt&lt/div&gt
+        &lt/div&gt
+    &lt/body&gt
+&lt/html&gt
+</pre>
+<br>
+<p>All we've done here is add a few <code>div</code> tags that will define where the dashboard and the date range slider will be displayed in the <code>WebView</code>. Note that the <code>div</code> tied to the actual chart is now a child of the dashboard <code>div</code>. Now, let's take a look at <code>genChart.js</code>:</p>
+<br>
+<pre class="prettyprint linenums">
+google.charts.load('current', {packages: ['corechart','controls']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart(){
+    var temps = JSON.parse(ChartData.getTemps());
+    var dates = JSON.parse(ChartData.getDates());
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('datetime','Date');
+    data.addColumn('number','Temperature');
+
+    for(var key in temps){
+        data.addRow([new Date(dates[key]),parseInt(temps[key])])
+    }
+
+    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
+
+    var slider = new google.visualization.ControlWrapper({
+    'controlType':'DateRangeFilter',
+    'containerId':'dateSlider',
+    'options':{filterColumnLabel:'Date'}
+    });
+
+    var chart = new google.visualization.ChartWrapper({
+                'chartType': 'ScatterChart',
+                'containerId': 'chart',
+                'options': {
+                    animation: {
+                        duration: 2000
+                    },
+                    title: 'Forecast For Raleigh, North Carolina'
+                }
+            });
+
+    dashboard.bind(slider,chart);
+    dashboard.draw(data);
+}
+</pre>
+<br>
+<p>In order to access the controls provided by the API, we have to add them to the set of packages we wish to load. This is done in line 1 by adding the string <code>'controls'</code> to the object serving as the second argument of the <code>load</code> function. Lines 5 through 14 do the work of creating the data table and should be familiar to you if you've been following this guide. The remaining code in the above snippet does the work of creating a dashboard, setting up a control, defining the chart type and attributes, binding the slider to the chart and, finally, drawing the chart in the activity's <code>WebView</code>. We create the dashboard in line 16 by calling the <code>Dashboard</code> constructor. This will serve as a kind of backdrop for our chart and will be used later to bind the chart it will draw to the slider control. Next, we create the control by calling the <code>ControlWrapper</code> constructor. This constructor takes a JavaScript object as parameter in which we define the control's type, the <code>div</code> tag it should be tied to in the <code>WebView</code> and we specifiy which column in the chart the control should filter. You can see a list of control types <a href="https://developers.google.com/chart/interactive/docs/gallery/controls#controls-gallery" target="_blank">here</a>. The last step before binding the control and drawing the chart is to create the chart itself. This is a little different from what we've seen before, namely that instead of directly forming the type of chart we desire by calling the relevant chart constructor we have to make use of the <code>ChartWrapper</code> class. This process is similar to what we did with the <code>ControlWrapper</code>and shouldn't be all that hard to follow. Note, however, the value of the <code>animation</code> key. There is a single attribute, <code>duration</code> we use to define a duration that determines how long it will take for the animation to complete - its as simple as that. Below is a video that showcases what we've just programmed (I suggest you view it fullscreen and forgive me for the poor quality of the picture):</p>
+<video width="520" height="440" controls>
+    <source src="/static/video/chartAnim.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<br>
+<br>
+<div class="row">
+    <div class="col-xs-8"><p class="trail">Previous: <a href="/chart-data-2">Working with HTTP requests</a></p></div>
+    <div class="col-xs-4"><p class="trail">Next: <a href="resources">Resources</a></p></div>
+</div>
+{% endblock content %}

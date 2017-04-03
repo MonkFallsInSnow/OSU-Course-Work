@@ -1,0 +1,36 @@
+1) Class: Dealer
+Function: isInsuranceAvailable()
+
+The test for this function hits the for loop, but does not hit the if statement within. This means that although the test encountered the for loop, the given input did not trigger the loop to run. The dealerHand list variable is most likely empty.
+
+2)  An interface consists of a set of method signatures, but lacks their corresponding definitions. The signatures themselves cannot be tested and have no real meaning outside the classes that implement the interface they belong to. Put simply, there is simply no code to test in an interface. 
+
+3) The testBasicFunctionality test is extremely general, offering limited input and only a single path of execution. A functional test of this kind fails to explore the program's reaction to edge cases and a majority of the variable states that are allowed to arise during the program's lifetime. Both line and branch coverage will suffer, though the most detrimental of these deficiencies must necessarily be branch coverage. This test assumes valid input and only one form of play, ignoring several aspects of the game the program has taken steps to handle. In this way, much of the program's functionality will never be tested; however, it may be possible to achieve better coverage if several functional tests were performed, though such an approach lacks the ability to approach each function at an atomic level and can only test the program as whole. Employing the use of both more general and atomic functional tests would improve the quality of any test suite.
+
+4) Each if statement constitutes a branch in the program, that is a path the flow of execution may follow through the code. With if statements alone, two branches emerge, one that provides a path when the statement's condition is true to execute the code in the corresponding block before moving on and another that bypasses the if statement entirely when the condition is false. The follwing is an illustration:
+
+	 n1			n1 is the entry point
+	/ |			the path from n1 to n2 denotes the if condition is true
+   /  |			the path from n1 to n3 denotes the if condition is false
+  n2  |			all paths eventually lead to the code outside the if block, n3
+   \  |			there are two branches to cover
+    n3
+	
+If/else statements add another level to this flow, but the number of branches to cover remains the same. Hence, with every if or if/else statement, two corresponding branches will be spawned.
+
+
+	 n1			n1 is the entry point
+	/ \			the path from n1 to n2 denotes the if condition is true, n2 is code in the if block
+   /   \		the path from n1 to n3 denotes the if condition is false, n3 is code in the else block
+  n2    n3		all paths eventually lead to the code outside the if block, n4
+   \   /		there are two branches to cover
+    n4
+
+Note that this is not the case with if/else if and if/else if/else statements:
+
+	  n1			n1 is the entry point
+	/ | \			the path from n1 to n2 denotes the if condition is true, n2 is code in the if block
+   /  |	 \			the path from n1 to n3 denotes the else if condition is true, n3 is code in the else if block
+  n2  n3 (n4)		the path from n1 to n4 denotes that both the if and else if conditions are false, n4 is an optional else block
+   \  |	 /			all paths eventually lead to the code outside the if/else if block, n5
+     n5				there are three branches to cover

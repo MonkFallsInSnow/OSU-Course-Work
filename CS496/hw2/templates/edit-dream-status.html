@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Dream Edit Made{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li><a href="/">Home</a></li>
+	<li><a href="/record">Record Dreams</a></li> 
+	<li><a href="/review">View & Edit Dreams</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+	<li><a href="/sign-up"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+	<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<!-- display modal upon successful edit -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#editModal").modal('show');
+    });
+</script>
+
+<!-- Modal html inspired by w3schools: http://www.w3schools.com/bootstrap/bootstrap_modal.asp-->
+<div id="editModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    	<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+        	<h4 class="modal-title">Edit Status</h4>
+      	</div>
+      	<div class="modal-body">
+        	<p>Dream edit successful.</p>
+      	</div>
+      	<div class="modal-footer">
+        	<a href="/review" class="btn btn-default" role="button">Close</a>
+      	</div>
+   </div>
+  </div>
+</div>
+
+{% endblock content %}

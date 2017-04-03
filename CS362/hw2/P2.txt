@@ -1,0 +1,41 @@
+1) What is the bug? Concisely describe it and provide a test case that reproduces it. Include a JUnit case in your writeup that replicates the error. Be clear as to what the expected and actual outputs look like.
+
+On the surface, the bug is caused by the discardCard(int handPos) method in the CardCollection class, though the failure in functionality is dependent in part on the equals(Object o) method in the Card class. Under certain conditions - conditions less dependent on the value of handPos, relying more so on the state of the underlying CardCollection object upon which the discardCard method operates - Card objects present in a CardCollection instance are removed in an erroneous manner, causing the order of the collection to be inproperly affected. Here is a JUnit test case that exposes the bug:
+
+@Test
+public void testDiscardCardMiddleDeepCopy()
+{
+	Card card1 = new Card(Card.Face.TWO,Card.Suit.CLUB);
+	Card card1Copy = new Card(Card.Face.TWO,Card.Suit.CLUB);
+	Card card2 = new Card(Card.Face.ACE,Card.Suit.CLUB);
+	Card card2Copy = new Card(Card.Face.ACE,Card.Suit.CLUB);
+
+	CardCollection col = new CardCollection(card1,card2,card1Copy,card2Copy);
+
+	try
+	{
+		Card result = col.discardCard((col.getCards().size())/2);
+		assertEquals("Wrong card was discarded",card1Copy,result);
+		assertArrayEquals("Collection is out of order",new Card[] {card1,card2,card2Copy},col.getCards().toArray());
+	}
+	catch(Exception e)
+	{
+		fail("An unhandled exception occured -> " + e.toString());
+	}
+} 
+
+This test creates a collection containing duplicate cards and then removes card1Copy at index 2. The collection expected after this removal is {card1,card2,card2Copy}; however, the actual result turns out to be {card2,card1Copy,card2Copy}. This is due to the manner in which cards are removed from the collection, namely because the discardCard() method employs the Java ArrayList class function remove(Object o). Implicitly, Java makes use of an object's equals() method when using remove(Object o) to remove the first instance of the Object from the calling instance. The Card class defines its equals() method in such a way as to assert that two Card instances are equal if they have equivalent string representations, making an ontological assertion that claims two cards are equal if they share a common face and suit value. Unfortunately, this confuses similarity with equality, so that when the remove(Object o) method begins its search for card1Copy, it is actually looking for "TWOCLUB" rather than a reference to the actual object card1copy points to. Since card1 converts to an equivalent string, this instance is found to be equivalent to the given parameter and removed instead of the intended card1Copy; hence, the order of the collection fails to be maintained. 
+
+
+2) Would this error surface when the class was used for the following:
+	- a deck where cards are always drawn from the top?
+
+No, because the first Card instance found to be equivalent to the instance passed to the remove(Object o) method will always be the card at index 0.
+ 
+	- a hand where the player is required to keep their cards in order?
+
+Assuming the player's hand contains duplicate cards, this bug may surface if a card copy is removed from any index other than 0, depending of course on the removal of a card whose copy precedes it.
+
+	- a deck that is shuffled by removing cards from a random place in the deck and adding them back via method add?
+	
+If the deck does not contain duplicates then the order of the deck after any number of removals should only be affected by the process of removal and the order of the add operations. However, if duplicates are present, then there is no guarantee, especially if the card was not removed from the top of the deck, that the card intended for removal will be the one that is discarded, though an "equivalent" card will in fact be removed from the deck. Adding these cards back to the deck will therefore increase the deck with cards similar to those chosen for removal, but not equal in regards to their actual reference. This will no doubt shuffle the deck, but not in the manner the programmer may have desired.

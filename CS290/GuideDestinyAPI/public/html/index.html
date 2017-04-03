@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Destiny API</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/stylesheet.css">
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/index">Guide to the Destiny API</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/index">Home</a></li>
+                <li><a href="/characterData">Sample Application</a></li>
+                <li><a href="/getKey">Getting an API Key</a></li>
+                <li><a href="/firstRequest">Your First Request</a></li>
+                <li><a href="/moreRequests">Making More Interesting Requests</a></li>
+                <li><a href="/resources">Conclusion and Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>The Destiny API</h1>
+            <p>A basic how-to guide</p>
+        </div>
+        <div class="map">
+            <h2>What this guide hopes to accomplish</h2>
+            <p class="content">Welcome! This basic how-to guide aims to set you up with all the information you will need to make public get requests using the Destiny API. By the end of this guide, you should be able to get a variety of interesting data about your Destiny characters, and, since all the API get requests are relatively similar, with a little reading from the documentation, you should be prepared to grab any other information you may want. What this guide will not cover are post requests and private endpoints. The documentation on those is sparse and generally requires login credentials including the X-CSRF HTTP header and required token.</p>
+            <br>
+            <br>
+            <h2>What you need to know</h2>
+            <p class="content">Since Bungie does not currently support, <a href="https://www.bungie.net/en/Clan/Post/39966/98520350/0/0/1" target="_blank">"Requests from JavaScript hosted by another web site..."</a>, the requests we will be making involve server side JavaScript, so some knowledge of the language will go a long way. In doing so, if you would like to run some of the code examples yourself, you will need a basic understanding of how to work with node.js including the express.js, request.js, body-parser.js and handlebars.js modules. You can find links to the documentation for each of these modules on the resource page.</p>
+            <br>
+            <br>
+            <h2>What is the Destiny API?</h2>
+            <p class="content">Put simply, the Destiny API is a service that allows one to make server side get and post requests in order to collect a vast amount of data about game characters, in-game activities, vendors, equipment stats, user accounts and forum posts.  With this information, you will be able to create web and mobile apps that use this content in useful and interesting ways. On the next page of this guide, you will find a very basic app that queries the API for a list of equipment currently used by a specific character. All you need do is enter you PSN or Xbox Live username, select your account platform and which character’s items you want to view. If you don’t have an account, just click the “No Account” radio button and a table displaying my own character’s equipment will present itself. Let’s get started.</p>
+            <div class="row">
+                <a href="/characterData" class="btn btn-success btn-md pull-right" id="nextBtn">Next >></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/index">Guide to the Destiny API</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/index">Home</a></li>
+            <li><a href="/characterData">Sample Application</a></li>
+            <li><a href="/getKey">Getting an API Key</a></li>
+            <li class="active"><a href="/firstRequest">Your First Request</a></li>
+            <li><a href="/moreRequests">Making More Interesting Requests</a></li>
+            <li><a href="/resources">Conclusion and Resources</a></li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="map">
+        <h1 class="page-header">Accessing The Vault</h1>
+        <p class="content">Once you have an API key, the next thing you will need is a membership ID. Most of the get requests for character data require this ID to be inserted somewhere into the endpoint string. However, since all requests of this API require a valid API key, before you can even get this ID, you must setup your requests to include the X-API-Key header. Once all this is taken care of, we can start making more interesting requests.</p>
+        <br>
+        <br>
+        <h2>The X-API-Key header</h2>
+        <p class="content">If you are using node.js to build your app, the easiest way to make HTTP get requests to the Destiny API involves the request.js module. You can acquire this module by typing <code>var request  = require('request');</code> in your JavaScript server file. Once you have the module, you can define a default header to be included in all your request calls. This is useful because it will stop you from having to repeatedly define several separate objects for the call’s options parameter detailing the X-API-Key header and variable endpoint URLs. We can accomplish this with the following code:</p>
+        <br>
+        <p class="content"><code>var baseRequest = request.defaults({headers: {'X-API-Key':credentials.destinyKey}});</code></p>
+        <br>
+        <p class="content">Now, whenever you want to make an HTTP request, use <code>baseRequest(url, callback)</code> as the form of your query, and your API key will be included in the call. Note that the <code>credentials.desitnyKey</code> value of the X-API-Key property in the above code snippet should be replaced with your actual API key. I am keeping my hidden in an object for security reasons.</p>
+        <br>
+        <br>
+        <h2>Getting a membership ID</h2>
+        <p class="content">The URL needed to make this request is</p>
+        <br>
+        <p class="content"><code>http://www.bungie.net/Platform/Destiny/{membershipType}/Stats/GetMembershipIdByDisplayName/{displayName}/</code></p>
+        <br>
+        <p class="content">Using this request requires two parameters, a membership type and PSN or Xbox Live display name. There are only two available membership types. A value of 1 refers to Xbox Live, while a value of 2 refers to the Playstation Network. The display name is the username tied to the relevant membership type account. Lets take a look at the full request:</p>
+        <br>
+        <pre class="prettyprint images">
+            const HOST = 'http://www.bungie.net/Platform/Destiny/';
+
+            var baseRequest = request.defaults({headers: {'X-API-Key':credentials.destinyKey}});
+
+            app.get('/test',function(req,res) {
+                if (!err && response.statusCode < 400) {
+                    baseRequest(HOST + '2/Stats/GetMembershipIdByDisplayName/' + credentials.defaultUserName + '/',
+                        function (err, response, body) {
+
+                        var context = {};
+                        context.test = JSON.stringify(JSON.parse(body), null, 4);
+                        res.render('test', context);
+                    });
+                }
+            });
+        </pre>
+        <br>
+        <p class="content">A few things to note about the above, and subsequent, code examples: <strong>1)</strong> I’ve made use of a constant called <code>HOST</code> to store the prefix of all the endpoint URLs we will be exploring in this guide to make HTTP request parameters easier to read. <strong>2)</strong> Any variable with the <code>credentials.</code> prefix is either hiding data I wish to keep secret, serving to improve readability or reducing the amount of characters I need type. All you need do is replace those variables with your own values. <strong>3)</strong> The use of <code>'/test'</code> and the code inside the body of <code>baseRequest()</code> assumes you have a handlebars.js html template called test.handlbars in your project’s views folder containing an embedded handlebars expression akin to {{{expression}}}. These names can easily be changed to suit your particular needs.</p>
+        <br>
+        <p class="content">The API’s response to our request will return a JSON object. The body property of this response contains a JSON string we must convert to an object using <code>JSON.parse()</code> before we can access any of the data in the body. Rendering the beautified JSON response in either a web page (as the above example does) or printing it in the console, produces this:</p>
+        <br>
+        <pre class="prettyprint images">{{memId}}</pre>
+        <br>
+        <p class="content">The membership ID belonging to the username you passed to the <code>{displayName}</code> parameter is represented as the value of the JSON object’s <code>Response</code> property. You will use this ID for many of your HTTP requests, so it may be prudent to save it in a variable for later use.</p>
+        <br>
+        <p class="content"><code>var memberId = JSON.parse(body).Response;</code></p>
+        <br>
+        <h2>Understanding the JSON response</h2>
+        <p class="content">The most important part of the JSON response is the <code>Response</code> property. Every successful request returns the bulk of its data in this key. Although the call used to get a membership ID returned a string value, most will be objects, and you will have to carefully examine the structure of this value to get the key value pair you want. We will see some more complicated responses a little later in the guide.</p>
+        <br>
+        <p class="content">For error handling purposes, the <code>ErrorCode</code>, <code>ErrorStatus</code> and <code>Message</code> properties should be enough to tell you what went wrong with your request. For example, here is what returns when we make a request without the X-API-Key header:</p>
+        <br>
+        <pre class="prettyprint images">{{error}}</pre>
+        <br>
+        <p class="content">Because so many of the requests you will make to the API involve a membership ID, you will probably end up nesting some of your get requests and on top of dealing with the asynchronous nature of an HTTP request, you should also include some basic error handling code before you attempt to do anything meaningful with the response. You can use any of the values in the error related properties of the response to this end. Here is a basic example, keeping in mind that the error code will return a 1 if the request is sucessful:</p>
+        <br>
+        <pre class="prettyprint images">
+            if (JSON.parse(body).ErrorCode > 1) {
+                    //error handling code goes here
+                }
+        </pre>
+        <br>
+        <h2>A note about private endpoints</h2>
+        <p class="content">All the requests made in this guide are classified as public, that is you can query the API without logging in a user and acquiring certain security credentials. For this reason, requests using private endpoints,  are more complicated and the manner in which those requirements are met is poorly documented. If you are interested in using private endpoints, many of which involve post requests that allow you to make forum posts or change a character’s equipment, here are a few links that may help you accomplish user authentication.</p>
+        <ul>
+            <li class="content"><a href="https://www.bungie.net/en-US/Clan/Post/39966/106896643/0/0" target="_blank">A "simple" authentication method for PSN</a></li>
+            <li class="content"><a href="https://www.bungie.net/en/Clan/Post/39966/69253468/0/0" target="_blank">General authentication</a></li>
+            <li class="content"><a href="http://bungienetplatform.wikia.com/wiki/Authentication" target="_blank">Various authentication scripts</a></li>
+        </ul>
+        <br>
+        <br>
+        <a href="/getKey" class="btn btn-success btn-md pull-left" id="prevBtn"><< Previous</a>
+        <a href="/moreRequests" class="btn btn-success btn-md pull-right" id="nextBtn">Next >></a>
+        <br>
+        <br>
+    </div>
+</div>

@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android - Working With Data{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+    <li><a href="/">Home</a></li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/basic-chart-1">Setup</a></li>
+            <li><a href="/basic-chart-2">Preparing Assets</a></li>
+            <li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown active">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-data-1">User Input</a></li>
+            <li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="page-header"><h1 class="title">Getting Data From HTTP Requests</h1></div>
+<p>Android provides the Volley library to handle asynchronous requests and responses. In this section of the guide, we will use Volley to make requests to the <a href="http://openweathermap.org/api" target="_blank">Open Weather Map API</a> and feed the response to a new chart. You can either create a new Android Studio project or simply delete the layout and Java files we created in the previous section to load the chart and replace the xml in the main activity layout file to display a single <code>WebView</code>. Either way, before we start making Volley requests, we need to add the following dependecy to the app level <code>build.gradle</code> file:</p>
+<br>
+<pre>
+dependencies {
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+}
+</pre>
+<br>
+<p>Also, if you started a new project for this portion of the guide, make sure you add <code>android.permission.INTERNET</code> permission to your app's manifest file as both Volley the Google Charts API require internet access to do their work.</p>
+<p>The <code>onCreate</code> method in the main activity doesn't change much from when we created it at the beginning of this guide. Take a look:</p>
+<br>
+<pre class="prettyprint linenums">
+public class MainActivity extends AppCompatActivity {
+
+    private double[] tempArray;
+    private String[] dateArray;
+    private int dataLen;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        makeRequest();
+
+        WebView webview = (WebView) findViewById(R.id.chartView);
+        webview.addJavascriptInterface(new ChartData(),"ChartData");
+
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+
+        webview.loadUrl("file:///android_asset/html/chart.html");
+    }
+}
+</pre>
+<br>
+<p>We've added a few class variables to store the data we will be recieving from our request and make a call to a private class function, <code>makeRequest</code>, that will handle the actual request to the Open Weather Map API. Everything else should look familiar. Let's take a look at <code>makeRequest</code>.</p>
+<br>
+<pre class="prettyprint linenums">
+private void makeRequest()
+{
+    String url = "http://api.openweathermap.org/data/2.5/forecast?q=Raleigh&units=imperial&APPID=" + YOUR_API_KEY;
+
+    final RequestQueue queue = Volley.newRequestQueue(this);
+
+    JsonObjectRequest jsReq = new JsonObjectRequest(Request.Method.GET, url, (String) null,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try
+                    {
+                        JSONObject weatherData = response;
+                        dataLen = weatherData.getJSONArray("list").length();
+                        tempArray = new double[dataLen];
+                        dateArray = new String[dataLen];
+
+                        for(int i = 0; i < dataLen; i++)
+                        {
+                            JSONObject curObject = weatherData.getJSONArray("list").getJSONObject(i);
+                            JSONObject curWeather = curObject.getJSONObject("main");
+                            tempArray[i] = curWeather.getDouble("temp");
+                            dateArray[i] = curObject.getString("dt_txt");
+                        }
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Response Error", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+
+        @Override
+        public void onErrorResponse(VolleyError e) {
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), "Response Error", Toast.LENGTH_SHORT).show();
+
+        }
+    });
+
+    queue.add(jsReq);
+}
+</pre>
+<br>
+<p>The URL in line 3 is the endpoint we will use to collect a 5 day forecast for Raleigh, North Carolina. You'll have to get an API key from <a href="http://openweathermap.org/appid" target="_blank">here</a> before you can use the API. In order to use Volley, we need to setup a request queue. Line 5 does this by calling the convience method <code>Volley.newRequestQueue</code>. Although you can <a href="https://developer.android.com/training/volley/requestqueue.html" target="_blank">set up your own custom request queue</a>, using the default queue will create a priority queue to deal with numerous requests, enable automatic caching and handle the network configurations needed to send requests and recieve responses. For the purposes of this guide, the default request queue will suffice.</p>
+<p>Once the queue has been initialized, we can go about forming the actual request body. This is done in lines 7 through 41 and is actually one very long object declaration. Here are the parameters for the <code>JSONObjectRequest</code> constructor:</p>
+<br>
+<pre class="prettyprint">
+JsonObjectRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) 
+</pre>
+<br>
+<p>Let's examine each parameter.</p>
+<ul>
+	<li>
+		<code>method</code>: This signifies the HTTP verb that characterizes the kind of request we wish to make. For our particular request, we are using the constant value <code>Request.Method.GET</code> to make a GET request. There are also constants for PUT, DELETE, POST, etc.
+	</li>
+	<li>
+		<code>url</code>: This is simply the URL we are directing our request to.
+	</li>
+	<li>
+		<code>jsonRequest</code>: This represents the body of the request. Since we are making a GET request, we pass a null value as argument; however, if you are making a PUT or POST request you will probably need to form a JSON object body. You can do this by creating a <code> new JSONObject()</code> and then adding key value pairs to this object by calling its <code>put("key",value)</code> method. 
+	</li>
+	<li>
+		<code>listener</code>: For this parameter we need to define a callback interface to handle the response. Only one method belongs to this interface: <code>onResponse</code>. We must override this function and define how we will deal with the response. In our case, we must work with the JSON object returned by our request to OpenWeatherMap. Here is a look at partial response from the API: <br><img src="static/images/jsonResponse.jpg"><br>
+		We begin by saving the response and the length of the JSON object array tied to the <code>list</code> key. Then, using this length, we create two arrays that will function in parrallel to store the response data we are interested in. Next we extract the dates and temperatures from the response and store them in the aforementioned arrays. Note that our request is being made asynchronously and that the callback function <code>onResponse</code> will not execute until we recieve a response from the API.
+	</li>
+	<li>
+		<code>errorListener</code>: Similiar to <code>listener</code>, this parameter requires that we define a callback interface to deal with any errors that may arise during the request/response process. All we do here is override the interface function and supply a toast that will inform the user that something has gone wrong.
+	</li>
+</ul>
+<p>Once we've finished defining the request, we need to add it to the request queue we set up earlier. This is as simple as calling the <code>add</code> method and passing the request as parameter.</p>
+<p>The next step is to define the <code>JavaScriptInterface</code> class and functions that will feed data to the JavaScript file handling chart creation. We covered the basics of implementing this in the section on user input, but here is all the modified code for <code>MainActivity.java</code> and <code>genChart.js</code>:</p>
+<br>
+<b class="subtitle">MainActivity.java</b>
+<pre class="prettyprint linenums">
+package com.cs496.osu.howtoguide;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+public class MainActivity extends AppCompatActivity {
+
+    private double[] tempArray;
+    private String[] dateArray;
+    private int dataLen;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        makeRequest();
+
+        WebView webview = (WebView) findViewById(R.id.chartView);
+        webview.addJavascriptInterface(new ChartData(),"ChartData");
+
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+
+        webview.loadUrl("file:///android_asset/html/chart.html");
+    }
+
+    private void makeRequest()
+    {
+        String url = "http://api.openweathermap.org/data/2.5/forecast?q=Raleigh&units=imperial&APPID=" + YOUR_API_KEY;
+
+        final RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest jsReq = new JsonObjectRequest(Request.Method.GET, url, (String) null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try
+                        {
+                            JSONObject weatherData = response;
+                            dataLen = weatherData.getJSONArray("list").length();
+                            tempArray = new double[dataLen];
+                            dateArray = new String[dataLen];
+
+                            for(int i = 0; i < dataLen; i++)
+                            {
+                                JSONObject curObject = weatherData.getJSONArray("list").getJSONObject(i);
+                                JSONObject curWeather = curObject.getJSONObject("main");
+                                tempArray[i] = curWeather.getDouble("temp");
+                                dateArray[i] = curObject.getString("dt_txt");
+                            }
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Response Error", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Response Error", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        queue.add(jsReq);
+    }
+
+    public class ChartData {
+
+        @JavascriptInterface
+        public String getTemps()
+        {
+            String str = "{";
+
+            for(int i = 0; i < dataLen; i++)
+            {
+                if(i != dataLen - 1)
+                {
+                    str += "\"" + i + "\":\"" + tempArray[i] + "\",";
+                }
+                else
+                {
+                    str += "\"" + i + "\":\"" + tempArray[i] + "\"";
+                }
+            }
+
+            str += "}";
+
+            return str;
+        }
+
+        @JavascriptInterface
+        public String getDates()
+        {
+            String str = "{";
+
+            for(int i = 0; i < dataLen; i++)
+            {
+                if(i != dataLen - 1)
+                {
+                    str += "\"" + i + "\":\"" + dateArray[i] + "\",";
+                }
+                else
+                {
+                    str += "\"" + i + "\":\"" + dateArray[i] + "\"";
+                }
+            }
+
+            str += "}";
+
+            return str;
+        }
+    }
+}
+</pre>
+<br>
+<b class="subtitle">genChart.js</b>
+<br>
+<pre class="prettyprint linenums">
+google.charts.load('current', {packages: ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart(){
+    var temps = JSON.parse(ChartData.getTemps());
+    var dates = JSON.parse(ChartData.getDates());
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('datetime','Date/Time');
+    data.addColumn('number','Temperature');
+
+    for(var key in temps){
+        data.addRow([new Date(dates[key]),parseInt(temps[key])])
+    }
+
+    var chart = new google.visualization.ScatterChart(document.getElementById('chart'));
+
+    var options = {title:'Forecast for Raleigh, NC'};
+    chart.draw(data, options);
+}
+</pre>
+<br>
+<p>If you run the app now, you should get a similar chart to the one below:</p>
+<br>
+<img src="static/images/weatherScatterChart.jpg">
+<br>
+<div class="row">
+    <div class="col-xs-8"><p class="trail">Previous: <a href="/chart-data-1">Working with user input</a></p></div>
+    <div class="col-xs-4"><p class="trail">Next: <a href="chart-customization-1">Chart animation and controls</a></p></div>
+</div>
+{% endblock content %}

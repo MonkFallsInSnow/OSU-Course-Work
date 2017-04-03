@@ -1,0 +1,139 @@
+1.a) How many cost units are spent in the entire process of performing 32 consecutive push operations on an empty array which starts
+out at capacity 8, assuming that the array will double in capacity each time a new item is added to an already full dynamic array?
+
+array size = 0, array capacity = 8
+8 pushes = 8 cost units
+array is now full
+1 push = 9 cost units (8 copies made, 1 new element added)
+total pushes = 9
+
+array size = 9, array capacity = 16
+7 pushes = 7 cost units
+array is now full
+1 push = 17 cost units (16 copies made, 1 new element added)
+total pushes = 17
+
+array size = 17, array capacity = 32
+15 pushes = 15 cost units
+array is now full
+total pushes = 32
+
+total cost = 56 cost units
+average cost = 1.75 cost units
+
+1.b) As N (ie. the number of pushes) grows large, under this strategy for resizing, what is the big-oh complexity for a push?
+
+This algorithm will push elements into the array at a complexity of O(1) as long as the array is not at capacity. When at capacity,
+the algorithm requires that n copies are made and reinserted into a new array. In this case, the complexity will be O(n). The larger
+the array gets, the less likely it will have to be resized; thus, on average, the complexity will be O(1)+. In the given example, the
+array gets resized 2 times, while the majority of the calls to push are performed at constant time.
+
+2.a) How many cost units are spent in the entire process of performing 32 consecutive push operations on an empty array which starts out
+at capacity 8, assuming that the array will grow by a constant 2 spaces each time a new item is added to an already full dynamic
+array? 
+
+array size = 0, array capacity = 8
+8 pushes = 8 cost units
+array is now full
+1 push = 9 cost units (8 copies made, 1 new element added)
+total pushes = 9
+
+array size = 9, array capacity = 10
+1 push = 1 cost unit
+array is now full
+1 push = 11 cost units (10 copies made, 1 new element added)
+total pushes = 11
+
+array size = 11, array capacity = 12
+1 push = 1 cost unit
+array is now full
+1 push = 13 cost units (12 copies made, 1 new element added)
+total pushes = 13
+
+array size = 13, array capacity = 14
+1 push = 1 cost unit
+array is now full
+1 push = 15 cost units (14 copies made, 1 new element added)
+total pushes = 15
+
+array size = 15, array capacity = 16
+1 push = 1 cost unit
+array is now full
+1 push = 17 cost units (16 copies made, 1 new element added)
+total pushes = 17
+
+array size = 17, array capacity = 18
+1 push = 1 cost unit
+array is now full
+1 push = 19 cost units (18 copies made, 1 new element added)
+total pushes = 19
+
+array size = 19, array capacity = 20
+1 push = 1 cost unit
+array is now full
+1 push = 21 cost units (20 copies made, 1 new element added)
+total pushes = 21
+
+array size = 21, array capacity = 22
+1 push = 1 cost unit
+array is now full
+1 push = 23 cost units (22 copies made, 1 new element added)
+total pushes = 23
+
+array size = 23, array capacity = 24
+1 push = 1 cost unit
+array is now full
+1 push = 25 cost units (24 copies made, 1 new element added)
+total pushes = 25
+
+array size = 25, array capacity = 26
+1 push = 1 cost unit
+array is now full
+1 push = 27 cost units (26 copies made, 1 new element added)
+total pushes = 27
+
+array size = 27, array capacity = 28
+1 push = 1 cost unit
+array is now full
+1 push = 29 cost units (28 copies made, 1 new element added)
+total pushes = 29
+
+array size = 29, array capacity = 30
+1 push = 1 cost unit
+array is now full
+1 push = 31 cost units (30 copies made, 1 new element added)
+total pushes = 31
+
+array size = 31, array capacity = 32
+1 push = 1 cost unit
+array is now full
+total pushes = 32
+
+total cost = 260 cost units
+average cost = 8.125 cost units
+
+2.b) As N (ie. the number of pushes) grows large, under this strategy for resizing, what is the big-oh complexity for a push?
+
+This algorithm is less efficient than the previous example. Because the push operation will cause the array to resize every other call after the initial
+resizing, the average complexity for inserting a value into the array will be far closer to O(n) than O(1). 
+
+3.a) Suppose that a dynamic array stack doubles its capacity when it is full, and shrinks (on Pop only) its capacity by
+half when the array is half full or less. Can you devise a sequence of N push() and pop() operations which will result in poor
+performance (O(N^2) total cost)? 
+
+One could imagine a scenario in which an algorithm makes several consecutive push and pop operations on an array at capacity. The first call to push will
+resize the array by doubling its size, while a subsequent call to pop will reduce the size to half its new capacity, necessitating another resize. Both 
+of these operations will require n steps to perform the necessary copying of elements into a new array; thus, performing both calls will require 2n steps 
+and have a complexity of O(n). We can imagine this order of function calls (push, pop, push, pop, etc.) to be repeated n times over the course of the program, 
+meaning that the push then pop operation will take n * 2n steps which can be expressed as having a complexity of O(n^2). 
+
+3.b) How might you adjust the array's shrinking policy to avoid this? (Hint: You may assume that the initial capacity of the array is N/2.)
+
+Rather than reducing the size of the array by half each time a call to pop reduces the size of the array to half the current capacity, the algorithm could
+be adjusted to resize the array on a call to pop that the reduces the size of the array to a quarter of the current capacity. Even if several consecutive calls 
+to push and pop were called one after the other, with the initial push operation taking place on a full array, would only require a single resize. Thus, on 
+average, the number of O(1) calls to push or pop would outnumber the O(n) calls to these same functions, especially if the array has a large capacity. For 
+example, an array with a capacity of 1,000 will require 1,001 O(1) calls to push, without encountering a call to pop, in order to fill the array and trigger 
+a resize. After the resize, the capacity of the new array will be 2,000. Before the next resize occurs, there must be either 999 consecutive calls to push 
+or 501 O(1) consecutive calls to pop before the array is resized. 
+

@@ -1,0 +1,1590 @@
+#########PHASE 1#############
+
+
+Get All Accounts - eventual consistency only
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "account": 5629499534213120
+    }, 
+    {
+        "account": 5649391675244544
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "86", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:34 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "01f8e3576ee093a1dda43d594119f63a;o=1"
+}
+-------------------------------------------------------------------
+
+
+Get All Users - eventual consistency only
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "account": 5629499534213120, 
+        "user": 5629499534213120
+    }, 
+    {
+        "account": 5649391675244544, 
+        "user": 5629499534213120
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "148", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:34 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "5df831328cd54cdf557ef790a5cbe6fa"
+}
+-------------------------------------------------------------------
+
+
+Get All Dreams - eventual consistency only
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Query returned zero results"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "47", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:35 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "77c7b349df1f7aaad8d159321cb6bb00"
+}
+-------------------------------------------------------------------
+
+
+Get Invalid
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid url endpoint"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "40", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:35 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "d71903fb5d0b32a86bace97b899b604b"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 2A############
+
+
+Invalid User Post - Missing Keys
+-------------------------------------------------------------------
+Response:
+{
+    "message": "A requried key is missing from the request body", 
+    "required": "['account', 'user', 'fname', 'lname', 'email', 'username', 'gender', 'age']"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "161", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:35 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "57dad8b86360bae53e66018c0fc14475"
+}
+-------------------------------------------------------------------
+
+
+Invalid User Post - Bad Age Value
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid value was passed in request body. Check the value of key -> age"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "91", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:36 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "daeaf88ebaa74559a89916329b6ad07b"
+}
+-------------------------------------------------------------------
+
+
+Invalid User Post - Bad Gender Value
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Please use one of the following gender values -> ['male', 'female', 'transgender', 'none']"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "110", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:36 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "3d1bb53c1c65edd60c5671d914c46ffd"
+}
+-------------------------------------------------------------------
+
+
+Post User 1
+-------------------------------------------------------------------
+Response:
+{
+    "account": 5101298819006464, 
+    "message": "User was created and added to the database", 
+    "user": 5629499534213120
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "123", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:37 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "201", 
+    "X-Cloud-Trace-Context": "5ed7f7659aa4effca46ad97611a8cc27"
+}
+-------------------------------------------------------------------
+
+
+Post User 2
+-------------------------------------------------------------------
+Response:
+{
+    "account": 5071522616049664, 
+    "message": "User was created and added to the database", 
+    "user": 5629499534213120
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "123", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:37 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "201", 
+    "X-Cloud-Trace-Context": "77ea8c7389a655713d526aa2f294f635"
+}
+-------------------------------------------------------------------
+
+
+Post User 3
+-------------------------------------------------------------------
+Response:
+{
+    "account": 5741031244955648, 
+    "message": "User was created and added to the database", 
+    "user": 5629499534213120
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "123", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:38 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "201", 
+    "X-Cloud-Trace-Context": "95f16aa357ac367438cd89a46fe2724a"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 2B############
+
+
+Get User With Invalid Account ID
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "106", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:38 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "f531062aba641275fd296d260aa87d73"
+}
+-------------------------------------------------------------------
+
+
+Get User 1 By Account ID
+-------------------------------------------------------------------
+Response:
+{
+    "age": 32, 
+    "email": "conrad@foo.com", 
+    "fname": "conrad", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "clewin"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "135", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:38 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "fd5849cec464943f4456b81c7ffc491b"
+}
+-------------------------------------------------------------------
+
+
+Get User 2 By Account ID
+-------------------------------------------------------------------
+Response:
+{
+    "age": 31, 
+    "email": "sam@foo.com", 
+    "fname": "sam", 
+    "gender": "female", 
+    "lname": "toman", 
+    "username": "stoman"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "131", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:38 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "66586cbde6533e9953486f0677b7ed9a"
+}
+-------------------------------------------------------------------
+
+
+Invalid Query String
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid key was passed in query string", 
+    "valid keys": "['username', 'gender', 'age', 'lname', 'fname', 'email']"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "135", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:39 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "4b6db0ef3bdf11d5f63f88757616b320"
+}
+-------------------------------------------------------------------
+
+
+Find User By Last Name (lewin) - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "age": 32, 
+        "email": "conrad@foo.com", 
+        "fname": "conrad", 
+        "gender": "male", 
+        "lname": "lewin", 
+        "username": "clewin"
+    }, 
+    {
+        "age": 32, 
+        "email": "conrad@foo.com", 
+        "fname": "conrad", 
+        "gender": "male", 
+        "lname": "lewin", 
+        "username": "clewin"
+    }, 
+    {
+        "age": 32, 
+        "email": "conrad@foo.com", 
+        "fname": "conrad", 
+        "gender": "male", 
+        "lname": "lewin", 
+        "username": "clewin"
+    }, 
+    {
+        "age": 65, 
+        "email": "bart@foo.com", 
+        "fname": "bart", 
+        "gender": "male", 
+        "lname": "lewin", 
+        "username": "blewin"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "610", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:39 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "cef704781203aee7f7acf5d50ccd3952"
+}
+-------------------------------------------------------------------
+
+
+Find User By Last Name  (lewin); Limit 1 Result; Filter Result Columns - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "age": 32, 
+        "gender": "male", 
+        "username": "clewin"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "76", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:40 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "563564c40df7f2c0038bca47cfe99558"
+}
+-------------------------------------------------------------------
+
+
+Find User By Last Name  (Lewin); Limit 1 Result; Filter Result Columns - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "3", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:40 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "3f76044a084fb3ed8a87a1c73d030b3a"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 2C#############
+
+
+User 1 - Original
+-------------------------------------------------------------------
+Response:
+{
+    "age": 32, 
+    "email": "conrad@foo.com", 
+    "fname": "conrad", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "clewin"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "135", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:40 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "2d3ef15e8ccaf20fe9ea530a0793a498"
+}
+-------------------------------------------------------------------
+
+
+Invalid Update of User 1
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Resource not found"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "38", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:41 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "404", 
+    "X-Cloud-Trace-Context": "9205931ae3d646521a8e2703727a9d72"
+}
+-------------------------------------------------------------------
+
+
+User 1 - Update
+-------------------------------------------------------------------
+Response:
+{
+    "age": 32, 
+    "email": "conrad@foo.com", 
+    "fname": "conrad", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "clewin"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "135", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:41 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "d669545654aec0840f5094859efd13b4"
+}
+-------------------------------------------------------------------
+
+
+User 3 - Original
+-------------------------------------------------------------------
+Response:
+{
+    "age": 65, 
+    "email": "bart@foo.com", 
+    "fname": "bart", 
+    "gender": "male", 
+    "lname": "lewin", 
+    "username": "blewin"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "131", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:41 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "ef8ec534c8e5e980cc09b364b603b32d"
+}
+-------------------------------------------------------------------
+
+
+Update Name and Gender of User 3
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource has been updated", 
+    "user": 5629499534213120
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "79", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:41 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "942fe128daf00d0a40df87d77ad669c6"
+}
+-------------------------------------------------------------------
+
+
+User 3 - Update
+-------------------------------------------------------------------
+Response:
+{
+    "age": 65, 
+    "email": "bart@foo.com", 
+    "fname": "foo", 
+    "gender": "transgender", 
+    "lname": "bar", 
+    "username": "blewin"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "135", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:42 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "f21a5f025ee30ea8147f869110535635"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 3A#############
+
+
+Invalid Dream Post - Missing Required Keys
+-------------------------------------------------------------------
+Response:
+{
+    "message": "A requried key is missing from the request body", 
+    "required": "['account', 'user']"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "105", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:42 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "d28f2a6b5eb67a86fa2c262d8dd404a9"
+}
+-------------------------------------------------------------------
+
+
+Post Dream With All Fields - User 1
+-------------------------------------------------------------------
+Response:
+{
+    "dream": 5707702298738688, 
+    "message": "Dream was created and added to the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "93", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:43 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "201", 
+    "X-Cloud-Trace-Context": "3e35ae2d53637615becfc26dd437e8f2"
+}
+-------------------------------------------------------------------
+
+
+Post Dream With Fewer Fields - User 1
+-------------------------------------------------------------------
+Response:
+{
+    "dream": 5668600916475904, 
+    "message": "Dream was created and added to the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "93", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:43 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "201", 
+    "X-Cloud-Trace-Context": "3f12140202ea4eb065ec9ea336c3a783"
+}
+-------------------------------------------------------------------
+
+
+Post Dream With All Fields - User 2
+-------------------------------------------------------------------
+Response:
+{
+    "dream": 5707702298738688, 
+    "message": "Dream was created and added to the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "93", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:43 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "201", 
+    "X-Cloud-Trace-Context": "3f7ce0aaeeea6035b477b91243e3bd42"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 3B#############
+
+
+Get Dreams From Invalid User
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "175", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:44 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "2f89b488224039cf02db1f729ca5abf2"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 1
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "522", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:44 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "da7ad042b14a423996cfedec978d2565;o=1"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 2
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "nightmare test description", 
+        "dreamType": "Nightmare", 
+        "mood": [
+            "worried", 
+            "disgusted"
+        ], 
+        "summary": "nightmare dream summary", 
+        "tags": [
+            "tag1", 
+            "tag2", 
+            "tag3"
+        ], 
+        "title": "nightmare dream title"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "335", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:44 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "77cd70c67898ecaca876e64d62a3c862"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 3
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "175", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:45 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "3cb92113495021baba8dc99a73743123"
+}
+-------------------------------------------------------------------
+
+
+Search Using Invalid Key
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid key was passed in query string", 
+    "valid keys": "['mood', 'title', 'tags', 'date', 'dreamType']"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "125", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:45 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "6ff082785b7892e9e07496b0401bb98b"
+}
+-------------------------------------------------------------------
+
+
+Find All Recurring Dreams - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "310", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:45 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "944180c6151c8f86a0fb7a8582bbdacd"
+}
+-------------------------------------------------------------------
+
+
+Find All Recurring Dreams; Limit is 1; Fewer Fields - Case Sensitive
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "mood": [
+            "annoyed"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "78", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:46 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "d5c5deb383f81ea95424d20ae8b37653"
+}
+-------------------------------------------------------------------
+
+
+Find All Recurring Dreams - Invalid Query String
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Invalid query string", 
+    "restrictions": "1) can't specify unindexed properties in query string fields key. 2) a key's value cannot be searched for and also used in the fields key. ex: ../dreams?fname=foo&fields=fname", 
+    "unidexed properties": "['summary', 'desc', 'content', 'commentor']"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "311", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:46 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "023570fbceceefd137d71ae703725b4a"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 3C#############
+
+
+User 1 Dream 1- Original
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "522", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:46 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "987a37b77eda7ebdb07d1ddaa54edc67"
+}
+-------------------------------------------------------------------
+
+
+Update User 1 Dream 1
+-------------------------------------------------------------------
+Response:
+{
+    "message": "This request requires the account, user and dream keys"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "74", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:46 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "c812c5aa98a955850de974032739bc7b"
+}
+-------------------------------------------------------------------
+
+
+User 1 Dream 1 - Update
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "522", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:47 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "d4d05306383d4831004ab38b8e3aae69"
+}
+-------------------------------------------------------------------
+
+
+User 2 Dream 1 - Original
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "522", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:47 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "c65f282e10c87e181c6b58f28d57558a"
+}
+-------------------------------------------------------------------
+
+
+Update User 2 Dream 1 - Invalid Request
+-------------------------------------------------------------------
+Response:
+{
+    "message": "This request requires the account, user and dream keys"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "74", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:48 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "400", 
+    "X-Cloud-Trace-Context": "613a23ff92f1ecfd05ae7e454d42f0e0"
+}
+-------------------------------------------------------------------
+
+
+User 2 Dream 1 - Update
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "None", 
+        "dreamType": "Epic Dream", 
+        "mood": [], 
+        "summary": "foo bar baz", 
+        "tags": [
+            "tag3"
+        ], 
+        "title": "None"
+    }, 
+    {
+        "date": "Sun, 23 Oct 2016 00:00:00 GMT", 
+        "desc": "test description 2", 
+        "dreamType": "Recurring Dream", 
+        "mood": [
+            "annoyed", 
+            "calm", 
+            "scared"
+        ], 
+        "summary": "test summary", 
+        "tags": [
+            "tag1", 
+            "tag2"
+        ], 
+        "title": "test dream 2"
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "522", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:48 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "09665cc57ad3386f0520b0ffd97ea884"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 4A#############
+
+
+Removing Dream 1 From User 2
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Dream resource deleted"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "42", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:48 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "38fe5f58e71744979b9388a5eb22ea99"
+}
+-------------------------------------------------------------------
+
+
+Get Dreams From User 2
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "175", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:48 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "361248b11103638b5513c8d91e11646d"
+}
+-------------------------------------------------------------------
+
+
+Remove Non-Existant Dream
+-------------------------------------------------------------------
+Response:
+{
+    "message": "Dream not found"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "35", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:49 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "404", 
+    "X-Cloud-Trace-Context": "72577cbcd00e2063b5df8bf269d6503c"
+}
+-------------------------------------------------------------------
+
+
+Removing User 1
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource deleted"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "41", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:49 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "43f38ba09a0357cfad233c830075d2b6"
+}
+-------------------------------------------------------------------
+
+
+Removing User 2
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource deleted"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "41", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:49 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "6c3e2a36fffb702598e85039ea2782de"
+}
+-------------------------------------------------------------------
+
+
+Removing User 3
+-------------------------------------------------------------------
+Response:
+{
+    "message": "User resource deleted"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "41", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:50 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "4e0a12359c7dad208554133066264054"
+}
+-------------------------------------------------------------------
+
+
+#########PHASE 4B#############
+
+
+User 1 Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "106", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:50 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "251430330ca8b52b296e0f4db558fe98"
+}
+-------------------------------------------------------------------
+
+
+User 2 Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "106", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:50 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "a7da3adb899674197d32b0a03952224e"
+}
+-------------------------------------------------------------------
+
+
+User 3 Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "message": "No such user exists in the database. Make sure the accountID and/or userID is accurate"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "106", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:51 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "4a3a3f459adf460b71fb7eba7b31ee85"
+}
+-------------------------------------------------------------------
+
+
+User 1 Dreams Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "175", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:51 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "b4da5b4eedf70c5c499a27ce95245b4e"
+}
+-------------------------------------------------------------------
+
+
+User 2 Dreams Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "175", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:51 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "bc91edb1c05827e069ce788b203b0684"
+}
+-------------------------------------------------------------------
+
+
+User 3 Dreams Should Be Gone
+-------------------------------------------------------------------
+Response:
+{
+    "help": "Make sure the accountID and/or userID is accurate. If they are accurate, the user has no dreams recorded", 
+    "message": "No such dream exists in the database"
+}
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "175", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:51 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "204", 
+    "X-Cloud-Trace-Context": "748011b1589a358e9eca4ffab7655dce"
+}
+-------------------------------------------------------------------
+
+
+All Accounts Should Be Gone - Eventual Consistency
+-------------------------------------------------------------------
+Response:
+[
+    {
+        "account": 5629499534213120
+    }, 
+    {
+        "account": 5649391675244544
+    }
+]
+
+
+Headers:
+{
+    "Accept": "application/json", 
+    "Alt-Svc": "quic=\":443\"; ma=2592000; v=\"36,35,34\"", 
+    "Cache-Control": "max-age=300", 
+    "Content-Language": "en", 
+    "Content-Length": "86", 
+    "Content-Type": "application/json", 
+    "Date": "Sun, 23 Oct 2016 00:56:52 GMT", 
+    "Server": "Google Frontend", 
+    "Status": "200", 
+    "X-Cloud-Trace-Context": "fd180de100b5254ba9a13e44145d9259"
+}
+-------------------------------------------------------------------
+
+

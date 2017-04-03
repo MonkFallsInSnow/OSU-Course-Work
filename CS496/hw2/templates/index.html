@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Dream Catcher{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+	<li class="active"><a href="/">Home</a></li>
+	<li><a href="/record">Record Dreams</a></li> 
+	<li><a href="/review">View & Edit Dreams</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+	<li><a href="/sign-up"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+	<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class = "page-header">
+	<h1>Remember Your Dreams</h1>
+</div>
+<p>Use this application to record, ponder and interpret your dreams.</p>
+<p>write better text...</p>
+{% endblock content %}

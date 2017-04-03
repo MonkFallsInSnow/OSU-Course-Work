@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android - Working With Data{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+    <li><a href="/">Home</a></li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/basic-chart-1">Setup</a></li>
+            <li><a href="/basic-chart-2">Preparing Assets</a></li>
+            <li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown active">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-data-1">User Input</a></li>
+            <li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="page-header"><h1 class="title">User Input</h1></div>
+<p>So far we have been working with static data supplied by the developer. Since this kind of data is not always available or relevant to an application, we have to find ways to deal with dynamically created data. One way in which this kind of data can affect an application is through user input. For this portion of the guide we are going to rewrite our main activity to accept user data and add a second activity to display the chart. Let's begin by replacing the <code>activity_main.xml</code> layout file with the following:</p>
+<br>
+<pre class="prettyprint">
+&lt?xml version="1.0" encoding="utf-8"?&gt
+&ltLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.cs496.osu.howtoguide.MainActivity"
+    android:orientation="vertical"&gt
+
+    &ltLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        &ltEditText
+            android:id="@+id/gameTitle1"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:hint="@string/titlePrompt"/&gt
+        &ltEditText
+            android:id="@+id/hours1"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:hint="@string/hoursPrompt"/&gt
+    &lt/LinearLayout&gt
+
+    &ltLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"&gt
+
+        &ltEditText
+            android:id="@+id/gameTitle2"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:hint="@string/titlePrompt"/&gt
+        &ltEditText
+            android:id="@+id/hours2"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:hint="@string/hoursPrompt"/&gt
+    &lt/LinearLayout>
+
+    &ltLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"&gt
+
+        &ltEditText
+            android:id="@+id/gameTitle3"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:hint="@string/titlePrompt"/&gt
+        &ltEditText
+            android:id="@+id/hours3"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:hint="@string/hoursPrompt"/&gt
+    &lt/LinearLayout&gt
+
+    &ltButton
+        android:id="@+id/submitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:onClick="submitForm"/&gt
+&lt/LinearLayout&gt	
+</pre>
+<br>
+<p>Your main activity should now look like this:</p>
+<br>
+<img src="/static/images/menuScreen.jpg">
+<br>
+<p>We've created several <code>EditText</code> views in our activity that the user will use to feed data to the chart. As such, we need to capture this data programmatically. To do this, we begin by replacing the code in <code>MainActivity.java</code>'s <code>onCreate</code> method with the following:</p>
+<br>
+<pre class="prettyprint linenums">
+package com.cs496.osu.howtoguide;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText game1, game2, game3, hours1, hours2, hours3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        game1 = (EditText)findViewById(R.id.gameTitle1);
+        game2 = (EditText)findViewById(R.id.gameTitle2);
+        game3 = (EditText)findViewById(R.id.gameTitle3);
+        hours1 = (EditText)findViewById(R.id.hours1);
+        hours2 = (EditText)findViewById(R.id.hours2);
+        hours3 = (EditText)findViewById(R.id.hours3);
+    }
+}
+</pre>
+<br>
+<p>The code above simply saves the <code>EditText</code> views the user will employ to enter data. Now, we need to pass that data to the activity that will display the chart. We do this by defining the function we referenced in this activity's layout file under the <code>Button</code> tag, namely <code>submitForm</code>. We also include a couple helper functions to aid in the process. <code>MainActivity.java</code> should now look like this:</p>
+<br>
+<pre class="prettyprint linenums">
+package com.cs496.osu.howtoguide;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText game1, game2, game3, hours1, hours2, hours3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        game1 = (EditText)findViewById(R.id.gameTitle1);
+        game2 = (EditText)findViewById(R.id.gameTitle2);
+        game3 = (EditText)findViewById(R.id.gameTitle3);
+        hours1 = (EditText)findViewById(R.id.hours1);
+        hours2 = (EditText)findViewById(R.id.hours2);
+        hours3 = (EditText)findViewById(R.id.hours3);
+    }
+
+    public void submitForm(View view)
+    {
+        Intent intent = new Intent(this,ChartActivity.class);
+
+        intent.putExtra("title1",getTitle(game1,"Title 1"));
+        intent.putExtra("title2",getTitle(game2,"Title 2"));
+        intent.putExtra("title3",getTitle(game3,"Title 3"));
+
+        intent.putExtra("hours1",getHours(hours1));
+        intent.putExtra("hours2",getHours(hours2));
+        intent.putExtra("hours3",getHours(hours3));
+
+        startActivity(intent);
+    }
+
+    private String getTitle(EditText view, String val)
+    {
+        String data = view.getText().toString();
+        if(data.equals(""))
+        {
+            return val;
+        }
+
+        return data;
+    }
+
+    private int getHours(EditText view)
+    {
+        int defaultVal = 0;
+        if(view.getText().toString().equals(""))
+        {
+            return  defaultVal;
+        }
+
+        return Integer.parseInt(view.getText().toString());
+    }
+}
+</pre>
+<br>
+<p>The <code>submitForm</code> method creates a new <code>Intent</code> and, before starting a new activity, loads that intent with several extras that will be passed to it. The <code>getTitle</code> and <code>gethours</code> helper functions facilitate this action by getting the text entered by the user in the various <code>EditText</code> views and returns that data to the <code>putExtra</code> method called by our new intent. As a result, once the user clicks the activity's submit button, the <code>ChartActivity.java</code> class file will execute and a chart reflecting the given data will be displayed.</p>
+<p>Create a new empty activity called <code>ChartActivity</code>. The <code>onCreate</code> method will retrieve the data passed to it by the previous activity's intent and set up the <code>WebView</code> to make use of the Google Charts API. Here is the relevant code and layout xml:</p>
+<br>
+<b class="subtitle">Layout</b>
+<pre class="prettyprint">
+&lt?xml version="1.0" encoding="utf-8"?&gt
+&ltRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_chart"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.cs496.osu.howtoguide.ChartActivity"&gt
+
+    &ltWebView
+        android:id="@+id/chartView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"&gt
+
+    &lt/WebView&gt
+&lt/RelativeLayout&gt
+</pre>
+<br>
+<b class="subtitle">ChartActivity.java</b>
+<pre class="prettyprint linenums">
+package com.cs496.osu.howtoguide;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
+public class ChartActivity extends AppCompatActivity {
+
+    private  String game1, game2, game3;
+    private  int hours1, hours2, hours3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chart);
+
+        Intent intent = getIntent();
+        game1 = intent.getStringExtra("title1");
+        game2 = intent.getStringExtra("title2");
+        game3 = intent.getStringExtra("title3");
+        hours1 = intent.getIntExtra("hours1",0);
+        hours2 = intent.getIntExtra("hours2",0);
+        hours3 = intent.getIntExtra("hours3",0);
+
+        WebView webview = (WebView) findViewById(R.id.chartView);
+        webview.addJavascriptInterface(new ChartData(),"ChartData");
+
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+
+        webview.loadUrl("file:///android_asset/html/chart.html");
+    }
+}	
+</pre>
+<br>
+<p>We've covered most of this code already. Line 29, however, may be unfamiliar. The <code>addJavascriptInterface</code> method will allow us to pass data to the the JavaScript file we created at the beginning of this guide. It requires two parameters, the first being an object of the class that will define our interface, and the second being the name for the interface which will be employed as a prefix to the function calls we will make in the <code>genChart.js</code> file. In order to give this special interface relevance, we must define it by adding a nested class within <code>ChartActivity</code>. The entire class file should look something like this:</p>
+<br>
+<pre class="prettyprint linenums">
+package com.cs496.osu.howtoguide;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
+public class ChartActivity extends AppCompatActivity {
+
+    private  String game1, game2, game3;
+    private  int hours1, hours2, hours3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chart);
+
+        Intent intent = getIntent();
+        game1 = intent.getStringExtra("title1");
+        game2 = intent.getStringExtra("title2");
+        game3 = intent.getStringExtra("title3");
+        hours1 = intent.getIntExtra("hours1",0);
+        hours2 = intent.getIntExtra("hours2",0);
+        hours3 = intent.getIntExtra("hours3",0);
+
+        WebView webview = (WebView) findViewById(R.id.chartView);
+        webview.addJavascriptInterface(new ChartData(),"ChartData");
+
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+
+        webview.loadUrl("file:///android_asset/html/chart.html");
+    }
+
+    public class ChartData {
+
+        @JavascriptInterface
+        public String getGames()
+        {
+            String str = "{\"title1\":\"" + game1 + "\",\"title2\":\"" + game2 + "\",\"title3\":\"" + game3 +"\"}";
+            return str;
+        }
+
+        @JavascriptInterface
+        public String getHours()
+        {
+            String str = "{\"hours1\":\"" + hours1 + "\",\"hours2\":\"" + hours2 + "\",\"hours3\":\"" + hours3 +"\"}";
+            return str;
+        }
+    }
+}	
+</pre>
+<br>
+<p>The <code>ChartData</code> class contains two functions <code>getGames</code> and <code>getHours</code>. In order for these functions to be called in <code>genChart.js</code> we must add the <code>@JavascriptInterface</code> annotation and mark each function as public. It should be noted that methods marked by this annotation can only return primitive data types (well, you can return anything you like, but only primitive data types will be successfully handled by your JavaScript file). In this case, I elected to have each function return all of the corresponding data in a single variable. Normally, you might do this with a list or array, but due to the unfortunate restriction on return types, we are left with only two options: 1) define getter methods for each input or 2) form a JSON object string. The first option seemed tedious, so I went with option two.</p>
+<p>We need to make a few minor modifications to our JavaScript file before we can run the app. Open <code>genChart.js</code> and make the following changes:</p>
+<br>
+<pre class="prettyprint linenums">
+google.charts.load('current', {packages: ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart(){
+    var games = JSON.parse(ChartData.getGames());
+    var hours = JSON.parse(ChartData.getHours());
+
+    var data = new google.visualization.arrayToDataTable([
+    ['Game','Hours Played'],
+    [games.title1,parseInt(hours.hours1)],
+    [games.title2,parseInt(hours.hours2)],
+    [games.title3,parseInt(hours.hours3)]
+    ]);
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+    var options = {title:'Time Spent Playing Video Games'};
+    chart.draw(data, options);
+}
+</pre>
+<br>
+<p>Lines 5 and 6 retrieve the user data input in the main activity by calling the <code>getGames</code> and <code>getHours</code> methods we defined in the <code>ChartData</code> nested class. Note how these functions are called. We then convert the returned string to a JSON object by calling <code>JSON.parse</code>. Lines 8 through 13 should be familiar, save for fact that rather than hardcoding data values, we are referencing the JSON object key values we saved in the <code>games</code> and <code>hours</code> variables. We've also changed the type of chart that is being displayed from a pie to a column chart. If you run the app now, you should see something like this:</p>
+<br>
+<img src="static/images/userDataResults.jpg">
+<br>
+<div class="row">
+    <div class="col-xs-8"><p class="trail">Previous: <a href="/basic-chart-3">Drawing the chart</a></p></div>
+    <div class="col-xs-4"><p class="trail">Next: <a href="/chart-data-2">Working with HTTP requests</a></p></div>
+</div>
+{% endblock content %}

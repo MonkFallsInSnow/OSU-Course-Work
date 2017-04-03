@@ -1,0 +1,83 @@
+table
+{
+    border-style: solid;
+    border-color: gray;
+    border-width: 1px;
+    width: 675px;
+    height: 10px;
+    
+}
+
+td, th
+{
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    width: 675px;
+    height: 10px; 
+}
+
+.rowHeader
+{
+    font-weight: normal;
+    font-style: italic;
+}
+
+tr:nth-of-type(2n)
+{
+    background-color: lightgreen;
+}
+
+
+tr:nth-of-type(2n+3)
+{
+     background-color: lightblue;
+}
+
+td:nth-of-type(2n+1)
+{
+    color: red;
+}
+
+td:nth-of-type(3)
+{
+    color: blue;
+}
+
+tfoot td:nth-of-type(1)
+{
+    color: black;
+}
+
+.outer-content
+{
+    padding: 20px;
+    width: 75%;
+    left: 0px;
+    background-color: lightpink;
+}
+
+.inner-content
+{
+    width: 75%;
+    margin: auto;
+    background-color: lightblue;
+    text-align: center;
+}
+
+input
+{
+    margin-left: 20px; 
+}
+
+label
+{
+    display:inline-block;
+    width:100px;
+}
+
+.submitForm
+{
+    margin-top: 10px;
+    width: 75px;
+}

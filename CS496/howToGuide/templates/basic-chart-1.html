@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+    <li><a href="/">Home</a></li>
+    <li class="dropdown active">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/basic-chart-1">Setup</a></li>
+            <li><a href="/basic-chart-2">Preparing Assets</a></li>
+            <li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle active" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-data-1">User Input</a></li>
+            <li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="page-header"><h1 class="title">Setup</h1></div>
+<p>First things first, create a new Android Studio project and add the following line to your manifest: <code>&ltuses-permission android:name="android.permission.INTERNET" /&gt</code>. Now, create a <code>WebView</code> in the layout file for your activity. This portion of the guide will be using the main activity as the display page for the chart and most of the code therein will occur in the <code>onCreate()</code> method, causing charts to show up as soon as the activity is loaded. Any images or code samples you see on this page will reflect that, so with this in mind, your project manifest and activity layout files should look like this:</p>
+<b class="subtitle">Manifest</b>
+<p><img src="/static/images/manifest.jpg"></p>
+<br>
+<b class="subtitle">Layout</b>
+<p><img src="/static/images/layout.jpg"></p>
+<br>
+<p>In order to get our chart to display in the WebView, we are going to have to write some HTML and JavaScript. By default, an Android <code>WebView</code> disables the use of JavaScript when loading an HTML file. You can enable the use of JavaScript by getting the relevant <code>WebView</code> by its id, accessing its settings and then authorizing the use of JavaScript. The following code demonstartes this process:</p>
+<br>
+<pre class="prettyprint linenums">
+package com.cs496.osu.howtoguide;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        WebView webview = (WebView) findViewById(R.id.chartView);
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setBuiltInZoomControls(true);
+    }
+}
+</pre>
+<br>
+<p>Line 15 gets the <code>WebView</code> by the id we assigned to it in the layout file. The <code>getSettings</code> method call in line 16 returns the default settings tied to the <code>WebView</code> we retrieved in line 15 and line 17 changes the default setting for that <code>WebView</code> to enable the use of JavaScript. The last line of code in the above snippet is not stricly necessary for achieving our main purpose of allowing the <code>WebView</code> to handle JavaScript code, but may prove useful for viewing larger charts as the <code>setBuiltInZoomControls(true)</code> method call will give users the ability to use touch controls to affect the current display zoom of the activity.</p>
+<br>
+<div class="row">
+<div class="col-xs-8"><p class="trail">Previous: <a href="/">Introduction</a></p></div>
+<div class="col-xs-4"><p class="trail">Next: <a href="/basic-chart-2">Preparing assets</a></p></div>
+</div>
+{% endblock content %}

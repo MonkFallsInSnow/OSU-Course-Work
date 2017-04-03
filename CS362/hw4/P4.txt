@@ -1,0 +1,57 @@
+1) True or False: A good test suite has good coverage
+True. A good test suite will include a set of functions that will at least attempt to run all possible executions of a program. Although this is generally impossible for larger programs, good coverage shows that a multiplicity of paths were encountered and tested.
+
+2) True or False: A suite with good coverage implies a good test suite
+False. Though a good test suite will have good coverage, this says very little about the the input provided for each test other than they met or failed a particular conditions, and says absolutely nothing about the state of a function's dependent parts (underlying variables, objects and other functions). Attaining good coverage is a start, but not the only metric by which a test suite should be judged.
+
+3) True or False: 100% Line/Statement Coverage implies 100% Branch Coverage. Justify your answer
+False. Consider the following code:
+
+if(x)
+{
+	y = 5;
+}
+
+return y;
+
+There are two branches here, one where x is true and one where x is false. It is possible to achieve 100% line coverage if x is true, since both the if block and the return statement will be executed. However, if x is false, then only the return statement will be executed and the statement within the if block is skipped which results in 50% line coverage. A test suite that only considers x as true will achieve 100% line coverage but only 50% branch coverage since it fails to traverse a path that will reach the return statement without having executed statements in the if block.
+
+4) True or False: 100% Branch Coverage implies 100% Line/Statement Coverage. Justify your answer
+True. Returning to the code example given in the answer to question 3, we can see that a test suite that examines program execution with both x = true and x = false will achieve both 100% line and branch coverage. Since a program that makes use of if statements establishes two execution paths per statement and all other code is either within or without some if block, covering each branch in a program will inevitably cover each statement.
+
+5) True or False: 100% Branch Coverage implies 100% Path Coverage. Full path coverage implies that every possible execution path in the tested code is followed by at least one test. Justify your answer
+True. Consider the following code:
+
+if(x)
+{
+	z = 10;
+}
+
+if(y)
+{
+	z = 1;
+}
+
+return z;
+
+It is possible to get 100% branch coverage by running tests that set both x and y to true, and both x and y to false. This does not, however, produce 100% path coverage. Consider the following diagram:
+
+	n1		n1 is the entry point
+   / |		the path from n1 to n2 denotes if (x) is true
+  n2 |		the path from n1 to n3 denotes if(x is false
+   \ |		
+    n3		the path from n3 to n4 denotes if(y) is true
+   / |		the path from n3 to n5 denotes if(y) is false
+  n4 |		the path from n1 to n5 denotes both if(x) and if(y) are false
+   \ |
+    n5		
+	
+There are 4 possible paths to the return statement at n5: 1) n1, n2, n3, n4, n5 2) n1, n2, n3, n5 3) n1, n3, n4, n5 and 4) n1, n3, n5. 100% branch coverage can be attained by following paths 1 and 4. Paths 2 and 3 will not be traversed by such a test, meaning 100% branch coverage does not imply 100% path coverage.
+
+6) Describe in a paragraph or less how your intuitions for what constitutes a quality test suite aligned (or did not) with your initial coverage results in problem 3
+
+Fortunately, my first attempt at a running my test suite yielded 96% line and 63% branch coverage. The presence of a bugs that did not merely affect the quality of the output, but hindered the execution of certain branches prevented my tests from achieving 100% line and branch coverage. Intuitively, it seems as though a test suite developer should aim for decent path coverage, but can reach satisfaction with rigorous branch coverage. This is how I approached my own suite. Realizing I would not be able to cover certain branches, I still designed tests for each function that would at least hit each conditional statement even if there was no way to force execution of the statements in their corresponding blocks. I think all good test suites should cover as many branches as possible and reserve rigorous path coverage mainly for code that seems to be producing bugs and secondarily to code that is heavily dependent on a set of conditional states.
+
+7) Compare in a paragraph or less a test suite written only using input domain partitioning to a test suite written to optimize coverage metrics.
+
+Referencing my experience with writing this test suite, the use of input domain partitioning seemed to also provide good coverage. On the other hand, it seems that designing a test suite to maximize coverage alone would be insufficient. For example, testing an input that triggers an exception could prevent the execution of all or some of the branches or lines in a function, but such a value would not have been revealed unless the input was properly partitioned. Extremes are generally dangerous; a middle ground is often prudent. Hence, designing a test suite that properly partitions input by modelling each block as a trigger for a particular branch or line and then expanding the partition to include inputs that may bypass these or nullify these branches seems like a good practice. 

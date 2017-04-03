@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Google Charts for Android{% endblock title %}
+
+{% block navbar %}
+<ul class="nav navbar-nav">
+    <li><a href="/">Home</a></li>
+    <li class="dropdown active">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">A Basic Chart<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/basic-chart-1">Setup</a></li>
+            <li><a href="/basic-chart-2">Preparing Assets</a></li>
+            <li><a href="/basic-chart-3">Drawing A Chart</a></li> 
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle active" data-toggle="dropdown" href="#">Working With Data<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-data-1">User Input</a></li>
+            <li><a href="/chart-data-2">HTTP Requests</a></li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bells & Whistles<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="/chart-customization-1">Controls & Basic Animation</a></li>
+        </ul>
+    </li>
+    <li><a href="/resources">Resources</a></li>
+</ul>
+{% endblock navbar %}
+
+{% block content %}
+<div class="page-header"><h1 class="title">Preparing Assets</h1></div>
+<p>Now that we've prepared our <code>WebView</code> for handling JavaScript code, we have to load the Google Charts API. To do this, we are going to create an HTML file that will be responsible for displaying the chart by calling two scripts - one to load the API and another to actually draw the chart. Let's begin by creating an assets folder to our project structure as doing so will allow us to programtically access the resources we place within this directory. Right click the app directory in your project view, select New, then Folder and finally click Asset Folder. Keep the default settings presented by the resulting dialog and click the Finish button. The assets folder should now be present in your project structure. Below are a few screen shots illustrating the process:</p>
+<b class="subtitle">Creating the Folder</b>
+<p><img src="/static/images/createAssetFolder.jpg"></p>
+<br>
+<b class="subtitle">The New Android Component Dialog</b>
+<p><img src="/static/images/assetFolderDialog.jpg"></p>
+<br>
+<b class="subtitle">The Project View</b>
+<p><img src="/static/images/assetFolderCreated.jpg"></p>
+<br>
+<p>Note that when the asset folder is created it will not have the html and js subfolders shown in the last of the previous images. I created these to facilitate better project organization. To mimic this, all you need to do is right click the assets folder now present in your project view, select New and then click the Directory option.</p>
+<br>
+<div class="row">
+    <div class="col-xs-8"><p class="trail">Previous: <a href="/basic-chart-1">Setting up the project</a></p></div>
+    <div class="col-xs-4"><p class="trail">Next: <a href="/basic-chart-3">Drawing the chart</a></p></div>
+</div>
+{% endblock content %}

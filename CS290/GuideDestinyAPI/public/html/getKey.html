@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Destiny API</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/css/stylesheet.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/index">Guide to the Destiny API</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="/index">Home</a></li>
+                    <li><a href="/characterData">Sample Application</a></li>
+                    <li class="active"><a href="/getKey">Getting an API Key</a></li>
+                    <li><a href="/firstRequest">Your First Request</a></li>
+                    <li><a href="/moreRequests">Making More Interesting Requests</a></li>
+                    <li><a href="/resources">Conclusion and Resources</a></li>
+                </ul>
+            </div>
+        </nav>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <div class="map">
+                <h1 class="page-header">Your Key to The City</h1>
+                <p class="content">Most of the requests you can make with the Destiny API require three important components: an API key, a membership ID and a character ID. We will cover how to get both your membership and character ID’s on the next page, but before either of those crucial pieces of information can be accessed you need to get an API key. </p>
+                <br>
+                <br>
+                <h2>Getting an API key</h2>
+                <p class="content">You can get an API key by visiting <a href="https://www.bungie.net/en/User/API" target="_blank">https://www.bungie.net/en/User/API</a> and signing in to your Bungie account. All you need to do is follow the instructions on each page, but if you are more of a visual learner, here are a few pictures describing the process:</p>
+                <br>
+                <p class = content><strong>1)</strong> Click the sign in or join up buttons (both lead to the same page).</p>
+                <img src="../images/apiKey1.jpg" class="images">
+                <br>
+                <br>
+                <br>
+                <p class="content"><strong>2)</strong> Choose your account platform and click the appropriate link. A login page will pop up, so just enter your credentials.</p>
+                <img src="../images/apiKey2.jpg" class="images">
+                <br>
+                <br>
+                <br>
+                <p class="content"><strong>3)</strong> Enter your username, email address and agree to the terms of service, then click on the "GIVE ME THE KEY" button.</p>
+                <img src="../images/apiKey3.jpg" class="images">
+                <br>
+                <br>
+                <br>
+                <p class="content"><strong>4)</strong> There you go! You should now have a valid API key. It's very important that you don't share this key with anyone (notice I blocked mine out). Anyone with this key can make requests of the API in your name and there is no way of knowing what kind of activity that might entail. Its better to play it safe.</p>
+                <img src="../images/apiKey4.jpg" class="images">
+                <br>
+                <br>
+                <br>
+                <br>
+                <a href="/characterData" class="btn btn-success btn-md pull-left" id="prevBtn"><< Previous</a>
+                <a href="/firstRequest" class="btn btn-success btn-md pull-right" id="nextBtn">Next >></a>
+                <br>
+                <br>
+            </div>
+        </div>
+    </body>
+</html>

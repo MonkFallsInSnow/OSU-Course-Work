@@ -1,0 +1,15 @@
+Function: lastZero(int[] arr)
+ - An exception is thrown when arr is null
+ - Incorrect output is produced when the last zero is positioned at index 0
+ 
+Function: last(int[] arr, int toFind)
+ - An ArrayIndexOutOfBoundsException is thrown if the toFind input is not in the array, can be found at any index other than index 0 or toFind is either greater than Integer.MAX_VALUE or less than Integer.MIN_VALUE
+ - Correct output is only produced if toFind is at index 0
+ 
+Function: positive(int[] arr) 
+ - An exception is thrown when arr is null
+ - Each test produced correct output
+ 
+Function: oddOrPos(int[] arr)
+ - An exception is thrown when arr is null
+ - This function does not allow for the fact that negative numbers can be odd; hence, incorrect output is produced whenever arr contains negative odd numbers
